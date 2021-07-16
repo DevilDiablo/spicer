@@ -1,1 +1,1 @@
-web: gunicorn bookmyholidat.wsgi --log-file -
+web: gunicorn spicer2.wsgi --log-file -
