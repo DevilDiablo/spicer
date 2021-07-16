@@ -1,0 +1,620 @@
+{% extends 'maintenance/tester/maintnavbar.html' %}
+{% load static %}
+
+{% block content %}
+<script>
+  function dismis(modelid){
+    alert(modelid);
+ alert(document.getElementById(modelid).modal("hide"));
+
+  }
+
+
+function convert(day)
+{
+  month = String(day)
+  if(month == "January")
+    return 1;
+  else if (month == "February")
+    return 2;
+    else if (month == "March")
+    return 3;
+    else if (month == "April")
+    return 4;
+    else if (month == "May")
+    return 5;
+    else if (month == "June")
+    return 6;
+    else if (month == "July")
+    return 7;
+    else if (month == "August")
+    return 8;
+    else if (month == "September")
+    return 9;
+    else if (month == "October")
+    return 10;
+    else if (month == "November")
+    return 11;
+    else 
+    return 12;
+}
+
+function validatebinary(idd,sidd)
+{
+  var inp = document.getElementById('notsatisimg'+idd);
+  sat=document.getElementById('satis'+idd);
+  nsat=document.getElementById('notsatis'+idd);
+  if(sat.checked)
+    return true;
+  else  
+  {
+    if(inp.files.length == 0){
+    alert("You have selected not satisfied please attach a image");
+    document.getElementById("notsatisimgl"+idd).style.display = "block";
+    document.getElementById("notsatisimg"+idd).style.display = "block";
+    return false;
+  }
+}
+}
+function validaterange(value1,value2,lt,mt,idd){
+  
+    if(lt == "True"){
+    var inp = document.getElementById('rang'+idd);
+    ltval = document.getElementById("rangeval").value;
+    if(ltval<value2){ 
+      document.getElementById("rang1"+idd).style.display = "block";
+      document.getElementById("rang"+idd).style.display = "block";
+
+    if(inp.files.length == 0){
+        alert("Range is more than "+value1+"!!! Attachment Required");
+        return false;
+    }
+  }
+  else{
+    document.getElementById("rang1"+idd).style.display = "none";
+    document.getElementById("rang"+idd).style.display = "none";
+
+
+  }
+
+}
+if(mt == "True"){
+
+    var inp = document.getElementById('rang'+idd);
+    ltval = document.getElementById("rangeval").value;
+    if(ltval>value1){ 
+      document.getElementById("rang1"+idd).style.display="block";
+      document.getElementById("rang"+idd).style.display = "block";
+
+
+    if(inp.files.length == 0){
+        alert("Range is Less than "+value1+"!!! Attachment Required");
+        return false;
+    }
+  }
+  else{
+    document.getElementById("rang1"+idd).style.display = "none";
+    document.getElementById("rang"+idd).style.display = "none";
+
+  } 
+}
+}
+function validatevalue()
+{
+  val = document.getElementById("val").value;
+  alert(val);
+  
+}
+function open1a(checkid,stype,fromday,todate,tim,sid)
+{
+  hello(sid);  
+  var current=new Date();
+  var date1=current.getDate();
+  hey=String(fromday);
+  h1=hey.split(',');
+  h2=h1[0].split(' ');
+  mon=convert(h2[0]);
+  h3=parseInt(h1[1])
+  year=current.getFullYear();
+  month=current.getMonth();
+  month=month+1;
+  if( fromday=="None")
+  {
+    modal=document.getElementById('aa'+checkid);
+    modal.style.display = "block";
+  }
+  else
+  {
+    if(h2[1]>date1 || mon>=month || h1>=year)
+    {
+    alert(" The next check is between "+fromday+" and "+todate);
+    }
+    else
+    {
+      modal=document.getElementById('aa'+checkid);
+      modal.style.display = "block";
+    }
+  }
+    
+}
+function open1b(checkid,stype,fromday,todate,tim,stanid)
+{
+  hello(stanid);
+  var current=new Date();
+  var date1=current.getDate();
+  hey=String(fromday);
+  h1=hey.split(',');
+  h2=h1[0].split(' ');
+  mon=convert(h2[0]);
+  h3=parseInt(h1[1])
+  year=current.getFullYear();
+  month=current.getMonth();
+  month=month+1;
+  if( fromday=="None")
+  {
+    modal=document.getElementById('b'+checkid);
+    modal.style.display = "block";
+  }
+  else
+  {
+    if(h2[1]>date1 || mon>=month || h1>=year)
+    {
+    alert(" The next check is between "+fromday+" and "+todate);
+    }
+    else
+    {
+      modal=document.getElementById('b'+checkid);
+      modal.style.display = "block";
+    }
+  }
+}
+let cron ;
+
+function reset(stanid) {
+  hour = 0;
+  minute = 0;
+  second = 0;
+  millisecond = 0;
+  document.getElementById('hour'+stanid).innerText = '00';
+  document.getElementById('minute'+stanid).innerText = '00';
+  document.getElementById('second'+stanid).innerText = '00';
+  document.getElementById('millisecond'+stanid).innerText = '000';
+  document.getElementById('mins'+stanid).value = '00';
+  
+}
+
+function pause(stanid) {
+  clearInterval(cron);
+
+  reset(stanid);
+}
+
+function hello(checkid)
+{
+  let hour = 0;
+  let minute = 0;
+  let second = 0;
+  let millisecond = 0;
+  function timer() {
+  if ((millisecond += 10) == 1000) {
+    millisecond = 0;
+    second++;
+  }
+  if (second == 60) {
+    second = 0;
+    minute++;
+  }
+  if (minute == 60) {
+    minute = 0;
+    hour++;
+  }
+  document.getElementById('hour'+checkid).innerText = returnData(hour);
+  document.getElementById('minute'+checkid).innerText = returnData(minute);
+  document.getElementById('second'+checkid).innerText = returnData(second);
+  document.getElementById('millisecond'+checkid).innerText = returnData(millisecond);
+  document.getElementById('mins'+checkid).value = returnData(minute);  
+}
+
+cron = setInterval(() => { timer(); }, 10);
+
+function returnData(input) {
+  return input > 9 ? input : `0${input}`
+}
+
+}
+
+function open1c(checkid,stype,fromday,todate,tim,sid)
+{
+/////
+hello(sid);
+//////
+  var current=new Date();
+  var date1=current.getDate();
+  hey=String(fromday);
+  h1=hey.split(',');
+  h2=h1[0].split(' ');
+  mon=convert(h2[0]);
+  h3=parseInt(h1[1])
+  year=current.getFullYear();
+  month=current.getMonth();
+  month=month+1;
+  if( fromday=="None")
+  {
+    modal=document.getElementById('c'+checkid);
+    modal.style.display = "block";
+  }
+  else
+  {
+    if(h2[1]>date1 || mon>=month || h1>=year)
+    {
+    alert(" The next check is between "+fromday+" and "+todate);
+    }
+    else
+    {
+      modal=document.getElementById('c'+checkid);
+      modal.style.display = "block";
+    }
+  }
+}
+
+   
+  function open1d(checkid,stype,fromday,todate,stanid)
+{
+  hello(stanid);
+
+  var current=new Date();
+  var date1=current.getDate();
+  hey=String(fromday);
+  h1=hey.split(',');
+  h2=h1[0].split(' ');
+  mon=convert(h2[0]);
+  h3=parseInt(h1[1])
+  year=current.getFullYear();
+  month=current.getMonth();
+  month=month+1;
+  if( fromday=="None")
+  {
+    modal=document.getElementById('d'+checkid);
+    modal.style.display = "block";
+  }
+  else
+  {
+    if(h2[1]>date1 || mon>=month || h1>=year)
+    {
+    alert(" The next check is between "+fromday+" and "+todate);
+    }
+    else
+    {
+      modal=document.getElementById('d'+checkid);
+      modal.style.display = "block";
+    }
+  }
+
+}
+// // $(document).ready(function(){
+// //   $("#myBtn").click(function(){
+// //     $("#binary").modal("toggle");
+// //   });
+// // });
+// </script>
+<br>
+{% for message in messages %}
+<div class="text-center alert alert-dismissible alert-primary">
+    <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+    {{message}}
+  </div>
+{% endfor %}
+<!--
+<div class="text-center alert alert-dismissible alert-info">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4 class="alert-heading">Welcome {{username}}!</h4>
+  </div>
+-->
+<div>
+  <div class="container">
+
+    <a class="btn btn-danger float-right" href="{% url 'maintenance:machinedetail' machinedata.id %}">Go back</a>
+    <h1><b>{{machinedata.machine_name}} - {{assemblydata.assembly_name}}</b></h1>
+  </div>
+  <hr>
+  </div>
+
+   <div class="list-group">
+     {% for part in parts %}
+     <div class="container">
+
+     <a data-bs-toggle="collapse" data-bs-target="#abc{{part.id}}" 
+     class="list-group-item list-group-item-action">+  {{part.part_desc}}</a>
+  
+
+  {% for checkpointdata in checkpointsdata  %}
+  {% if checkpointdata.part_id.id == part.id %}
+  <div id=abc{{part.id}} class="collapse">
+    {% for stan in stanb  %}
+      {% if stan.standard_id.check_id == checkpointdata %}
+      <div class="container">
+
+     <div class="list-group-item list-group-item-action bg-info" onclick="open1a('{{stan.id}}','{{stan.standard_type}}','{{stan.standard_id.check_id.fromdate}}','{{stan.standard_id.check_id.nextdate}}','{{stan.standard_id.time}}','{{stan.standard_id.id}}')"   >{{stan.standard_id.check_id.check_desc}} <button >strt</button>
+      <div class="modal" id="aa{{stan.id}}">
+        <div class="modal-dialog bg-info" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-info">
+              <h5 class="modal-title text-light">Binary Modal</h5>
+              <button type="button" class="close text-light"   aria-label="Close">
+                <span aria-hidden="true"  data-bs-dismiss="a{{stan.id}}" onclick='dismis("aa{{stan.id}}");'>&times;</span>
+              </button>
+            </div>  
+            <div class="modal-body">
+              <form action="{% url 'maintenance:updatebin' stan.id %}" method="POST"  enctype="multipart/form-data" onsubmit="return validatebinary('{{stan.id}}','{{stan.standard_id}}')">
+                {% csrf_token %}
+              <table class="table table-hover">
+                <tbody>
+                  <tr class="table-info">
+                    <th scope="row">Standard</th>
+                    <td>{{stan.standard_id.standard_desc}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Time</th>
+                    <td>Time = {{stan.standard_id.check_id.time}} min</td>
+                    </tr>
+                    <p style="display: none;">
+                      <tr class="table-info">
+                        <th scope="row">Time Taken</th>
+                        <td><span id="hour{{stan.standard_id.id}}" style="display: none;">00</span><span id="minute{{stan.standard_id.id}}">00</span>:<span id="second{{stan.standard_id.id}}">00</span><span id="millisecond{{stan.standard_id.id}}" style="display: none;">000</span></td>
+                        </tr>
+                    </p>
+                    <tr>
+                      <input type="text" name="mins{{stan.standard_id.id}}" id="mins{{stan.standard_id.id}}" style="display: none;">
+                      <th scope="row">Visual</th>
+                      <td>
+            
+                        <label >Satisfied</label>
+                        <input type="radio" id="satis{{stan.id}}" value="Satisfied" name="check{{stan.id}}"><br>
+                        
+                        <label >Not Satisfied</label>
+                        <input type="radio" id="notsatis{{stan.id}}" name="check{{stan.id}}" value="Not Satisfied"></td>
+                        </tr>
+                        <tr class="table-info">
+                          <th scope="row" id="notsatisimgl{{stan.id}}" style="display: none;">Upload Image</th>
+                          <td><input id="notsatisimg{{stan.id}}" type="file" class="btn btn-info" name="notsatisimg{{stan.id}}" value="userissuesimgs/noimage.png" style="display: none;" ></td>
+                        </tr>
+                    
+                  </tbody>
+                  </table>
+                
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-info" >Save changes</button>
+              <button type="button" class="btn btn-primary"  onclick="document.getElementById('a{{stan.id}}').style.display='none';pause('{{stan.standard_id.id}}');" >Close</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% for stan in stanv  %}
+      {% if stan.standard_id.check_id == checkpointdata %}
+      <div class="container">
+
+      <div class="list-group-item list-group-item-action bg-info"  >{{stan.standard_id.check_id.check_desc}} <button onclick="open1b('{{stan.id}}','{{stan.standard_type}}','{{stan.standard_id.check_id.fromdate}}','{{stan.standard_id.check_id.nextdate}}','{{stan.standard_id.time}}','{{stan.standard_id.id}}')" >strt</button>
+        <!-- <div class="list-group-item list-group-item-action bg-info">{{stan.check_id.check_desc}}  <button id="myBtn" class="btn btn-secondary" 
+        data-bs-target="#a{{stan.id}}" data-bs-toggle="modal">start</button> -->
+       <div class="modal" id="b{{stan.id}}">
+        <div class="modal-dialog bg-info" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-info">
+              <h5 class="modal-title text-light">Value Modal</h5>
+              <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close text-light"  onclick="document.getElementById('b{{stan.id}}').style.display='none';pause('{{stan.standard_id.id}}');">&times;</button>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'maintenance:updateval' stan.id %}" name="valueform" method="post" enctype="multipart/form-data"  >
+                {% csrf_token %}
+              <table class="table table-hover">
+                <tbody>
+                  <tr class="table-info">
+                    <th scope="row">Standard</th>
+                    <td>{{stan.standard_id.standard_desc}}</td>
+                  </tr>
+                  <input type="text" name="mins{{stan.standard_id.id}}" id="mins{{stan.standard_id.id}}" style="display: none;">
+                  <tr>
+                    <th scope="row">Time</th>
+                    <td>{{stan.standard_id.check_id.time}}</td>
+                  </tr>
+                  <p style="display: none;">
+                  <tr class="table-info">
+                    <th scope="row">Time Taken</th>
+                    <td><span id="hour{{stan.standard_id.id}}" style="display: none;">00</span><span id="minute{{stan.standard_id.id}}">00</span>:<span id="second{{stan.standard_id.id}}">00</span><span id="millisecond{{stan.standard_id.id}}" style="display: none;">000</span></td>
+                  </tr>
+                </p>
+                {% if stan.standard_id.standard_desc == "415V/230 V+/_ 10V" %}
+                  <tr>
+                    <th scope="row">415V</th>
+                    <td><input type="radio" id="satis{{stan.id}}" value="417" name="check{{stan.id}}"></td>
+                  </tr>
+                  <tr class="table-info">
+                    <th scope="row">230V+</th>
+                    <td><input type="radio" id="notsatis{{stan.id}}" name="check{{stan.id}}" value="230"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">_10V+</th>
+                    <td><input type="radio" id="notsatis{{stan.id}}" name="check{{stan.id}}" value="10"></td>
+                  </tr>
+                  
+                  {% else %}
+                  <tr >
+                    <th scope="row" for="val">Input Readings</th>
+                    <td><input type="text" class="text" name="val" id="val" Required></td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+
+                </table>
+                
+              
+            </div>
+            <div class="modal-footer ">
+              <button type="submit" class="btn btn-info" onclick="validatevalue();" >Save changes</button>
+              <button type="button" class="btn btn-primary"  onclick="document.getElementById('b{{stan.id}}').style.display='none';pause('{{stan.standard_id.id}}');" >Close</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+      {% endif %}
+      {% endfor %}
+      {% for stan in stanr  %}
+      {% if stan.standard_id.check_id == checkpointdata %}
+      <div class="container">
+
+     <div class="list-group-item list-group-item-action bg-info">{{stan.standard_id.check_id.check_desc}}  <button id="myBtn" class="btn btn-secondary" 
+      onclick="open1c('{{stan.id}}','{{stan.standard_type}}','{{stan.standard_id.check_id.fromdate}}','{{stan.standard_id.check_id.nextdate}}','{{stan.standard_id.time}}','{{stan.standard_id.id}}')">start</button>
+      <!-- <div class="list-group-item list-group-item-action bg-info">{{stan.check_id.check_desc}}  <button id="myBtn" class="btn btn-secondary" 
+        data-bs-target="#a{{stan.id}}" data-bs-toggle="modal">start</button> -->
+        <form action="{% url 'maintenance:updaterange' stan.id %}" method="POST" enctype="multipart/form-data" name="rangeform{{stan.id}}" onsubmit="return view()">
+          {% csrf_token %}
+       <div class="modal" id="c{{stan.id}}">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-info">
+              <h5 class="modal-title text-light">Range Modal</h5>
+              <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" onclick="document.getElementById('c{{stan.id}}').style.display='none';pause('{{stan.standard_id.id}}');">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-hover">
+                <tbody>
+                  <tr class="table-info"> 
+                  <th scope="row">Standard</th>
+                  <td>{{stan.standard_id.standard_desc}}</td>
+                </tr>
+                  <tr >
+                  <th scope="row">Time</th>
+                  <td>{{stan.standard_id.check_id.time}}</td>
+                </tr>
+                <p style="display: none;">
+                  <tr class="table-info">
+                  <th scope="row">Time Taken</th>
+                  <td><span id="hour{{stan.standard_id.id}}" style="display: none;">00</span><span id="minute{{stan.standard_id.id}}">00</span>:<span id="second{{stan.standard_id.id}}">00</span><span id="millisecond{{stan.standard_id.id}}" style="display: none;">000</span></td>
+                </tr>
+              </p>
+              <input type="text" name="mins{{stan.standard_id.id}}" id="mins{{stan.standard_id.id}}" style="display: none;">
+              {% if stan.rangevalue.lower_limit == True %}
+                  <tr >
+                  <th scope="row">Should be more than</th>
+                  <td>{{stan.rangevalue.more_than}}</td>
+                </tr>
+                {% elif stan.rangevalue.upper_limit == True %}
+                  <tr >
+                  <th scope="row">Should be less than</th>
+                  <td>{{stan.rangevalue.less_than}}</td>
+                </tr>
+                {% endif %}
+                <tr class="table-info">
+                  <th scope="row" for="rangeval">Input Readings</th>
+                  <td><input type="number" class="textarea" name="rangeval" id="rangeval" onchange="validaterange('{{stan.rangevalue.less_than}}','{{stan.rangevalue.more_than}}','{{stan.rangevalue.lower_limit}}','{{stan.rangevalue.upper_limit}}','{{stan.id}}');"></td>
+                </tr>
+                <tr >
+                  <th scope="row" for="rang{{stan.id}}" id="rang1{{stan.id}}" style="display: none;">Upload Image</th>
+                  <td><input id="rang{{stan.id}}" type="file" class="btn btn-info" name="rngimg{{stan.id}}" value="userissuesimgs/noimage.png" style="display: none;" ></td>
+                </tr>
+                </tbody>
+              </table>
+              
+                
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-info" name="rangeform{{stan.id}}">Save changes</button>
+              <button type="button" class="btn btn-primary"  onclick="document.getElementById('c{{stan.id}}').style.display='none'; pause('{{stan.standard_id.id}}');">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+          </form>
+          </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+
+        {% for stan in stanryb  %}
+      {% if stan.standard_id.check_id == checkpointdata %}
+      <div class="container">
+
+     <div class="list-group-item list-group-item-action bg-info">{{stan.standard_id.check_id.check_desc}}  <button id="myBtn" class="btn btn-secondary" 
+      onclick="open1d('{{stan.id}}','{{stan.standard_type}}','{{stan.standard_id.check_id.fromdate}}','{{stan.standard_id.check_id.nextdate}}','{{stan.standard_id.id}}')">start</button>
+        <form action="{% url 'maintenance:updateryb' stan.id %}" method="POST" name="rybform{{stan.id}}">
+          {% csrf_token %}
+       <div class="modal" id="d{{stan.id}}">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-info">
+              <h5 class="modal-title text-light">Range Multiple value</h5>
+              <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" onclick="document.getElementById('d{{stan.id}}').style.display='none';pause('{{stan.standard_id.id}}');">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-hover">
+                <tbody>
+                  <tr class="table-info">
+                    <th scope="row">Standard</th>
+                    <td>{{stan.standard_id.standard_desc}}</td>
+                  </tr>
+                  <tr >
+                    <th scope="row">Time</th>
+                    <td>{{stan.standard_id.check_id.time}}</td>
+                  </tr>
+                  <tr class="table-info">
+                    <th scope="row" for="r">R</th>
+                    <td><input type="number" class="textarea" name="r" id="r" ></td>
+                  </tr>
+                  <tr >
+                    <th scope="row" for="y">Y</th>
+                    <td><input type="number" class="textarea" name="y" id="y"></td>
+                  </tr>
+                  <tr class="table-info">
+                    <th scope="row" for="b">B</th>
+                    <td><input type="number" class="textarea" name="b" id="b" ></td>
+                  </tr>
+                  <p style="display: none;">
+                  <tr >
+                    <th scope="row"> Time Taken</th>
+                    <td><span id="hour{{stan.standard_id.id}}" style="display: none;">00</span><span id="minute{{stan.standard_id.id}}">00</span>:<span id="second{{stan.standard_id.id}}">00</span><span id="millisecond{{stan.standard_id.id}}" style="display: none;">000</span></td>
+                  </tr>
+                </p>
+                <input type="text" name="mins{{stan.standard_id.id}}" id="mins{{stan.standard_id.id}}" style="display: none;">
+                  <tr class="table-info">
+                    <th scope="row" for="rang{{stan.id}}" id="rang1{{stan.id}}" style="display: block;">Upload image</th>
+                    <td><input id="rang{{stan.id}}" type="file" class="btn btn-info" name="imgg{{stan.id}}" value="userissuesimgs/noimage.png" style="display: block;" ></td>
+                  </tr>
+                  </tbody>
+              </table>
+        
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-info" name="rybform{{stan.id}}">Save changes</button>
+              <button type="button" class="btn btn-primary"  onclick="document.getElementById('d{{stan.id}}').style.display='none'; pause('{{stan.standard_id.id}}');">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+          </form>
+          </div>
+          </div>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+    </div>
+</div>
+
+</div>
+{% endfor %}
+{% endfor %}
+{% endblock %}

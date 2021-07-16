@@ -1,0 +1,246 @@
+{% extends 'staf/navbarstaff.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<!-- <div style="padding-left: 1rem;">
+  <button class="btn btn-info">
+    <h2>Asigned Issues</h2></button></div>
+    <hr class=" border-success">
+
+</div> -->
+
+<div class="alert alert-info">
+  <h4 class="text-center" >Assigned Issues</h4>
+</div>
+
+<!-- 
+<div>
+{% for workunit in att %}
+{{workunit}}
+{% endfor %}
+</div>
+
+<div class="row" style="padding-top: 3rem;">
+{% for workunit in att %}
+{% if workunit.complid.did == dept %}
+
+<div class="col-sm-3 py-1" style="padding-left: 4rem; padding-right: 3rem;">
+  <div class="card border-success mb-3" style="width: 23rem; height: 25rem;">  
+    <div class="card-header bg-transparent border-success">Feedback ID:{{workunit.complid.id}}</div>
+  <div class="card-body text-info">
+    <h5 class="card-title">Issue:	&nbsp;{{workunit.complid.issue}}</h5>
+    <p class="card-text">Corrective Step:	&nbsp;{{workunit.complid.corrective}}</p>
+    <p class="card-text">Champion:	&nbsp;{{workunit.complid.cid.user}}</p>
+    <br><label>Attempts : </label>
+    {% if workunit.count == 1 %}
+    <button class="btn btn-primary"> </button>
+    {% endif %}
+    {% if workunit.count == 2 %}
+    <button class="btn btn-primary"> </button>
+    <button class="btn btn-primary"> </button>
+    {% endif %}
+    {% if workunit.count == 3 %}
+    <button class="btn btn-primary"> </button>
+    <button class="btn btn-primary"> </button>
+    <button class="btn btn-primary"> </button>
+    {% endif %}
+    {% if workunit.count == 4 %}
+    <button class="btn btn-primary"> </button>
+    <button class="btn btn-primary"> </button>
+    <button class="btn btn-primary"> </button>
+    <button class="btn btn-primary"> </button>
+
+    {% endif %}
+   
+  </div>
+  <div class="card-footer bg-transparent border-success " style="align-items: right;">
+   <a href="/updateatempt/{{workunit.id}}/"> <button class="btn btn-info" >Edit</button></a>
+   <button class="btn btn-success" data-bs-target="#view{{workunit.id}}"
+    data-bs-toggle="modal">View</button></a>
+  </div>
+
+  <div class="modal" id="view{{workunit.id}}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Feedback no. {{workunit.complid.id}}</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label>Id : {{workunit.complid.id}}</label><br>
+          <label>Issue : {{workunit.complid.issue}}</label><br>
+          <label>Opendate : {{workunit.complid.opendate}} </label><br>
+          <label>Corrective : {{workunit.complid.corrective}}</label><br>
+          <label>Accountdate : {{workunit.complid.accountdate}} </label><br>
+          <label>Champion : {{workunit.complid.cid.user}}</label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+ -->
+
+<div class="row" style="margin:1%">
+  {% for workunit in att %}
+  {% if workunit.complid.did == dept %}
+  <div class="card border-info mb-4" id="card-wrapper" >
+    
+    <div class="text-center card-header text-light bg-info">Feedback ID: {{workunit.complid.token}} | {{workunit.complid.id}}</div>
+    
+    <div class="card-body">
+
+      <table class="table table-hover">
+        <tbody>
+        <tr class="table-info">
+          <th scope="row">Issue</th>
+          <td>{{workunit.complid.issue}}</td>
+        </tr>
+        <tr >
+          <th scope="row">Corrective Step</th>
+          <td>{{workunit.complid.corrective}}</td>
+        </tr>
+        <tr class="table-info" >
+          <th scope="row">Champion</th>
+          <td>{{workunit.complid.cid.user}}</td>
+        </tr>
+
+        <tr>
+          <th scope="row">Attempts</th>
+          <td>
+            {% if workunit.count == 1 %}
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 2 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 3 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 4 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+      
+      </div>
+     <div class="card-footer bg-transparent border-info " style="align-items: right;">
+      
+      <a href="/updateatempt/{{workunit.id}}/"> <button class="btn btn-primary" >Edit</button></a>
+      <button class="btn btn-info" data-bs-target="#view{{workunit.id}}"
+        data-bs-toggle="modal">View</button>
+    
+   </div>
+</div> 
+
+
+<div class="modal" id="view{{workunit.id}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+        <h5 class="modal-title"><b>Feedback No : {{workunit.complid.id}}</b></h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+        <table class="table table-hover">
+          <tbody>
+          <tr class="table-info">
+            <th scope="row">Issue</th>
+            <td>{{workunit.complid.issue}}</td>
+          </tr>
+          <tr >
+            <th scope="row" >Open date</th>
+            <td>{{workunit.complid.opendate}}</td>
+          </tr>
+          
+          <tr class="table-info">
+            <th scope="row">Corrective</th>
+            <td>{{workunit.complid.corrective}}</td>
+          </tr>
+          
+          <tr >
+            <th scope="row" >Account date</th>
+            <td>{{workunit.complid.accountdate}}</td>
+          </tr>
+
+          <tr class="table-info">
+            <th scope="row">Champion</th>
+            <td>{{workunit.complid.cid.user}}</td>
+          </tr>
+
+          <tr >
+            <th scope="row" >Attempts</th>
+            <td>
+            {% if workunit.count == 1 %}
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 2 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 3 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 4 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+
+          </td>
+          </tr>
+
+          </tbody>
+        </table>
+<!-- 
+        <label>Id : {{workunit.complid.id}}</label><br>
+        <label>Issue : {{workunit.complid.issue}}</label><br>
+        <label>Opendate : {{workunit.complid.opendate}} </label><br>
+        <label>Corrective : {{workunit.complid.corrective}}</label><br>
+        <label>Accountdate : {{workunit.complid.accountdate}} </label><br>
+        <label>Champion : {{workunit.complid.cid.user}}</label>
+         -->
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+{% endfor %}
+</div>
+
+
+
+{% endblock %}

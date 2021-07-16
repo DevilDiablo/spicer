@@ -1,0 +1,41 @@
+{% extends 'navbarlogout.html' %}
+{% load static %}
+{% block content %}
+
+<div class="text-center alert alert-dismissible alert-info">
+  <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+  <h4 class="alert-heading">Feedback</h4>
+</div>
+ 
+  <div class="row" style="margin:1%;">
+    {% for i in list %}
+    <div class="card border-info mb-4"  id="card-wrapper" >
+   
+   <div class="text-center card-header text-light bg-info">Department :&nbsp;{{i.Dname}}</div>
+   
+   <div class="card-body text-info">
+     <div ></div>
+     <div class="card-img-top">
+      <img src="{{ i.dimg.url }}" width="286px" height="150px" >
+    </div>
+     </div>
+ 
+     <div class="card-footer bg-transparent border-info " style="align-items: right;">
+     <a href=" /allisues/{{i.id}}/ "> <div class="text-center card-header text-light bg-info">View</div></a>
+  </div>
+
+</div>
+
+{% endfor %}
+  
+  </div> 
+
+</div>
+</div>
+   </div>
+ </div>
+ <br>
+
+</div>
+
+{% endblock %}

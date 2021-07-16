@@ -1,0 +1,44 @@
+{% extends 'hod/navbarhod.html' %}
+{% block content %}
+<div style="height: 80vh;width: 100vw;" class="text-center d-flex justify-content-center align-items-center">
+    <div class="card border-info mb-4" style="max-width: 80rem;">
+    
+     
+<div class="card border-success mb-3" style="max-width: 40rem; max-height: 90rem;">
+    <div class="card-header bg-transparent border-success">Feedback ID:{{workunits.id}}</div>
+    <div class="card-body text-info">
+      <h5 class="card-title">Issue:	&nbsp;{{workunits.complid.issue}}</h5>
+      <form action="/atemptupdate/{{workunits.id}}/" method="POST">
+        {% csrf_token %}
+        <label name="opendate" id="opendate">opendate:&nbsp;{{workunits.complid.opendate}}</label><br><br>
+      
+        <label for="corrective">Corrective Mesures :</label>{{workunits.complid.corrective}}<br>
+        <input type="text" name="corrective" id="corrective" value="{{workunits.complid.corrective}}"><br><br>
+        <label for="accountdate">Accountdate:</label>{{workunits.complid.accountdate}}<br><br>
+      
+        <label for="champion">Champion:</label>
+        <select name="champion" id="champion" class='form-control'>
+           
+          <option value="0">None</option>
+          {% for i in list2 %}
+          {% if i.did == workunits.complid.did %}
+          <option value={{i.id}}>{{i.user}}</option>
+          {% endif %}
+        {% endfor %}
+        <br>
+       </select>
+   
+    </div>
+    <div class="card-footer bg-transparent border-success " style="align-items: right;">
+
+        <input type="submit" class="btn btn-info" value="Save">
+
+     </div>
+    </form>
+
+  </div>
+</div>
+</div>
+
+
+{% endblock %} 

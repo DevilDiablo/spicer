@@ -1,0 +1,36 @@
+{% extends 'maintenance/tester/maintnavbar.html' %}
+{% load static %}
+{% block content %}
+<div class = "container">
+<div>
+    
+    <h1 ><b>{{machinedata.machine_id.machine_name}} - {{machinedata.assembly_name}}</b></h1>
+  </div>
+  <hr>
+  
+
+<table class="table table-hover" border="2">
+    <tbody>
+    
+    <tr class="table-info" style="text-align: center;">
+        <th scope="col" >PART</th>
+        <th >CHECKPOINT</th>
+        <th >STANDARD</th>
+        <th>TIME IN MINS</th>
+        <th>FREQUENCY</th>
+        <th>ACTION</th>
+    </tr>
+    {% for stand in stand %}
+    <tr style="text-align: center;">
+        <td>{{stand.check_id.part_id.part_desc}}</td>
+        <td>{{stand.check_id.check_desc}}</td>
+        <td>{{stand.standard_desc}}</td>
+        <td>{{stand.check_id.time}} </td>
+        <td>{{stand.check_id.freq}}</td>
+        <td><a href="{% url 'maintenance:standdetailviewhod' stand.id %}"><button class="btn btn-success" >View</button></a></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

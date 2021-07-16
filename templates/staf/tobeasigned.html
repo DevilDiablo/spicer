@@ -1,0 +1,596 @@
+{% extends 'staf/navbarstaff.html' %}
+{% load static %}
+{% block content %}
+<script>
+  function func(id)
+  {
+  var current=new Date();
+  var date1=current.getDate();
+  date=document.getElementById("accdate"+id);
+  all=date.value.split("-");
+  year=current.getFullYear();
+  month=current.getMonth();
+  date2=date1+"-"+month+"-"+year;
+  if(all[2]<date1 || all[1]<month || all[0]<year)
+  {
+    document.getElementById('err'+id).style.display = "contents";
+    return false;
+  }
+    return true;
+  }
+
+  function func1()
+  {
+  let current=new Date();
+  let date1=current.getDate();
+  date=document.getElementById("champdate");
+  all=date.value.split("-");
+  year=current.getFullYear();
+  month=current.getMonth();
+  date2=date1+"-"+month+"-"+year;
+  if(all[2]<date1 || all[1]<month || all[0]<year)
+  {
+    window.alert("Enter valid account date");
+    return false;
+  }
+    return true;
+  }
+</script>
+<div class="text-center alert alert-dismissible alert-info">
+  <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+  <h4 class="alert-heading">Welcome {{username}}!</h4>
+</div>
+
+  
+{% for message in messages %}
+<div class="text-center alert alert-dismissible alert-primary">
+  <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+  {{message}}
+</div>
+{% endfor %}
+<br>
+<br>
+<div class="container">
+<div data-bs-toggle="collapse" data-bs-target="#demo" class="alert alert-success">
+  <h4 class="text-center" >Critical Issues</h4>
+</div> 
+<div id="demo" class="collapse" >
+
+  <div class="row" style="margin:1%">
+    {% for workunit in workunits %}
+    {% if workunit.crictcality == True and workunit.forward == False and workunit.corrective == "" %}
+ <div class="card border-success mb-4" id="card-wrapper" >
+   
+   <div class="text-center card-header text-light bg-success">Feedback ID:{{workunit.token}}</div>
+   
+   <div class="card-body">
+
+     <table class="table table-hover">
+       <tbody>
+       <tr class="table-success">
+         <th scope="row">Issue</th>
+         <td>{{workunit.issue}}</td>
+       </tr>
+       <tr >
+         <th scope="row">Corrective Step</th>
+         <td>{{workunit.corrective}}</td>
+       </tr>
+       </tbody>
+     </table>
+   
+     </div>
+    <div class="card-footer bg-transparent border-success " style="align-items: right;">
+    <a href="/editform/{{workunit.id}}/"> <button class="btn btn-success" >Edit</button></a>
+    <a href="/forwadform/{{workunit.id}}/"> <button class="btn btn-primary" >Forward</button></a>
+  </div>
+   <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+   
+</div> 
+
+{% endif %}
+{% endfor %}
+</div>
+</div>
+ </div>
+ 
+ 
+<br>
+    
+ <div class="container">
+  <div data-bs-toggle="collapse" data-bs-target="#demo1" class="alert alert-info" class>
+    <h4 class="text-center">Non Critical Issues</h4>
+  </div>  
+    <div id="demo1" class="collapse">
+      <div class="row" style="margin:1%">
+        {% for workunit in workunits %}
+        {% if workunit.crictcality == False and workunit.corrective == "" %}
+        
+        <div class="card border-info mb-4" id="card-wrapper" >
+          
+          <div class="text-center card-header text-light bg-info">Feedback ID :{{workunit.token}}</div>
+          
+          <div class="card-body">
+            
+            <table class="table table-hover">
+              <tbody>
+              <tr class="table-info">
+                <th scope="row">Issue</th>
+                <td>{{workunit.issue}}</td>
+              </tr>
+              <tr >
+                <th scope="row">Corrective Step</th>
+                <td>{{workunit.corrective}}</td>
+              </tr>
+              </tbody>
+            </table>
+       
+            </div>
+           <div class="card-footer bg-transparent border-info " style="align-items: right;">
+           <a href="/editform/{{workunit.id}}/"> <button class="btn btn-info" >Edit</button></a>
+          
+         </div>
+          <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+          
+    </div> 
+      
+    {% endif %}
+    {% endfor %}
+    </div>
+        </div>
+        <!---->
+      </div>
+      <br>
+      <div class="container">
+        <div data-bs-toggle="collapse" data-bs-target="#demo2" class="alert alert-success" class>
+          <h4 class="text-center">Account Date Assignment</h4>
+        </div>
+        <div id="demo2" class="collapse" >
+          <br>
+          <div class="row" style="margin:1%; ">
+            {% for workunit in du1 %}
+            {% if workunit.complid.crictcality == False %}
+            <div class="card border-success mb-4" id="card-wrapper" >
+              
+              <div class="text-center card-header text-light bg-success">Feedback ID:{{workunit.complid.token}}</div>
+              
+              <div class="card-body">
+                
+                <table class="table table-hover">
+                  <tbody>
+                  <tr class="table-success">
+                    <th scope="row">Issue</th>
+                    <td>{{workunit.complid.issue}}</td>
+                  </tr>
+                  <tr >
+                    <th scope="row">Corrective Step</th>
+                    <td>{{workunit.complid.corrective}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+               </div>
+                <div class="card-footer bg-transparent border-success " style="align-items: right;">
+                  <button class="btn btn-primary" data-bs-target="#a{{workunit.id}}" data-bs-toggle="modal">Reassign</button>
+                 </div>
+                </div>
+                <form action="/dateupdate/{{workunit.id}}/" method="POST" onsubmit="return func('workunit.complid.id')">
+                  {% csrf_token %}
+                <div class="modal" id="a{{workunit.id}}">
+                  <div class="modal-dialog " role="document">
+                    <div class="modal-content">
+                      <div class="modal-header bg-success">
+                        <h5 class="modal-title text-light">Assignment of date</h5>
+                        <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <table class="table table-hover">
+                          <tbody>
+                          <tr class="table-success">
+                            <th scope="row" name="opendate" id="opendate">opendate</th>
+                            <td>{{workunit.complid.opendate}}</td>
+                          </tr>
+                          <tr >
+                            <th scope="row" name="issue" id="issue">Issue</th>
+                            <td>{{workunit.complid.issue}}</td>
+                          </tr>
+                            <tr class="table-success">
+                            <th scope="row" name="corrective" id="corrective">Corrective</th>
+                            <td>{{workunit.complid.corrective}}</td>
+                          </tr>
+               <tr >
+                            <th scope="row" name="accountdate" id="accdate{{workunit.complid.id}}">Account Date</th>
+                            <td>{{workunit.complid.accountdate}}</td>
+                          </tr>
+                          <tr class="table-primary" id = "err{{workunit.complid.id}}" style="display: none;" >
+                            <th scope="row">Error</th>
+                            <td>Enter valid date </td>
+                          </tr>
+                       <tr class="table-success">
+                            <th scope="row" name="accountdate" id="champ">Champion</th>
+                            <td>{{workunit.complid.cid.user}}</td>
+                          </tr>
+                   <tr >
+                    <th scope="row" >Assign Account Date</th>
+                    <td><input type="date" name="accdate" id="accdate" required></td>
+                  </tr> 
+            
+                          </tbody>
+                        </table>
+        
+                       
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-info"  >Save changes</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+              
+                </form>
+              
+                {% endif %}
+                  {% endfor %}
+          
+                </div>
+        </div>
+      </div>
+
+          <br>
+<!-- 
+  <div class="container">
+    <div data-bs-toggle="collapse" data-bs-target="#demo3" class="alert alert-info" class>
+      <h4 class="text-center">Assigned Issues</h4>
+    </div>
+    <br>
+ 
+
+<div class="collapse" id=demo3>
+<div class="row" style="margin:1%">
+  {% for workunit in du %}
+  {% if workunit.complid.crictcality == False and workunit.complid.verification == False %}
+    <div class="card border-info mb-4" id="card-wrapper" >
+      
+      <div class="text-center card-header text-light bg-info">Feedback ID:{{workunit.complid.token}}</div>
+      
+      <div class="card-body">
+        
+        <table class="table table-hover">
+          <tbody>
+          <tr class="table-info">
+            <th scope="row">Issue</th>
+            <td>{{workunit.complid.issue}}</td>
+          </tr>
+          <tr >
+            <th scope="row">Corrective Step</th>
+            <td>{{workunit.complid.corrective}}</td>
+          </tr>
+        <tr class="table-info">
+            <th scope="row">Champion:	</th>
+            <td>{{workunit.complid.cid.user}}</td>
+          </tr>
+          </tbody>
+        </table>
+<br>
+<label>Attempts : </label>
+          
+
+          {% if workunit.count == 1 %}
+          <button class="btn btn-primary"> </button>
+         
+          {% elif workunit.count == 2 %}
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+        
+          {% elif workunit.count == 3 %}
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+    
+          {% elif workunit.count == 4 %}
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          {% endif %}
+<div class="card-footer bg-transparent border-info " style="align-items: right;">
+ 
+  <button class="btn btn-info" data-bs-target="#view{{workunit.id}}"
+  data-bs-toggle="modal">View</button>
+  </a>
+  </div>
+</div>
+</div>
+
+<div class="modal" id="view{{workunit.id}}">
+<div class="modal-dialog bg-info" role="document">
+<div class="modal-content">
+<div class="modal-header bg-info">
+  <h5 class="modal-title text-light">Feedback no. {{workunit.complid.token}}</h5>
+  <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <table class="table table-hover">
+    <tbody>
+    <tr class="table-info">
+      <th scope="row">Id</th>
+      <td>{{workunit.complid.id}}</td>
+    </tr>
+    <tr >
+      <th scope="row" >Issue</th>
+      <td>{{workunit.complid.issue}}</td>
+    </tr>
+<tr class="table-info">
+      <th scope="row" >Opendate </th>
+      <td>{{workunit.complid.opendate}}</td>
+    </tr>
+<tr >
+      <th scope="row" >Corrective</th>
+      <td>{{workunit.complid.corrective}}</td>
+    </tr>
+<tr class="table-info">
+      <th scope="row">Accountdate</th>
+      <td>{{workunit.complid.accountdate}}</td>
+    </tr>
+<tr >
+<th scope="row">Champion</th>
+      <td>{{workunit.complid.cid.user}}</td>
+    </tr>
+      
+
+    </tbody>
+  </table>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-info">Save changes</button>
+  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+</div>
+</div>
+</div>
+</div>
+
+
+
+{% endif %}
+{% endfor %}
+</div>
+</div>
+</div>
+
+
+
+<div class="container">
+  <div data-bs-toggle="collapse" data-bs-target="#demo5" class="alert alert-info" class>
+    <h4 class="text-center">Upcoming</h4>
+  </div>
+
+<div class="collapse" id=demo5>
+<div class="row" style="margin:1%">
+{% for workunit in sorts %}
+{% if workunit.crictcality == False and workunit.corrective != "" %}
+
+  <div class="card border-info mb-4" id="card-wrapper" >
+    
+    <div class="text-center card-header text-light bg-info">Feedback ID:{{workunit.token}}</div>
+    
+    <div class="card-body">
+      
+      <table class="table table-hover">
+        <tbody>
+        <tr class="table-info">
+          <th scope="row">Issue</th>
+          <td>{{workunit.issue}}</td>
+        </tr>
+        <tr >
+          <th scope="row">Corrective Step</th>
+          <td>{{workunit.corrective}}</td>
+        </tr>
+      </tbody>
+    </table>
+<div class="card-footer bg-transparent border-info " style="align-items: right;">
+  <button class="btn btn-info" data-bs-target="#view{{workunit.id}}"
+  data-bs-toggle="modal">View</button>
+</div>
+</div>
+
+<div class="modal" id="view{{workunit.id}}" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+        <h5 class="modal-title text-light">Feedback</h5>
+        <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover">
+          <tbody>
+          <tr class="table-info">
+            <th scope="row" name="opendate" id="opendate">opendate</th>
+            <td>{{workunit.opendate}}</td>
+          </tr>
+          <tr >
+            <th scope="row" name="issue" id="issue">Issue</th>
+            <td>{{workunit.issue}}</td>
+          </tr>
+<tr class="table-info">
+            <th scope="row" name="corrective" id="corrective">Corrective </th>
+            <td>{{workunit.corrective}}</td>
+          </tr>
+<tr >
+            <th scope="row" name="accountdate" id="accda">Account Date</th>
+            <td>{{workunit.accountdate}}</td>
+          </tr>
+<tr class="table-info" >
+            <th scope="row" for="champion">Champion assigned </th>
+            <td> {{workunit.cid.user.username}}</td>
+          </tr>
+            
+
+    </tbody>
+  </table>
+
+      </div>
+  
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+       
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+{% endif %}
+{% endfor %}
+</div>
+</div>
+
+</div>
+<br>
+
+  <div class="container">
+    <div data-bs-toggle="collapse" data-bs-target="#demo7" class="alert alert-success" class>
+      <h4 class="text-center">Verified Issues</h4>
+    </div><br>
+<div class="collapse" id=demo7>
+<div class="row" style="margin:1%;">
+{% for workunit in du %}
+{% if  workunit.complid.status == True and workunit.complid.verification == True %}
+
+<div class="card border-info mb-4" id="card-wrapper" >
+  <div class="text-center card-header text-light bg-info">Feedback ID:{{workunit.complid.token}}</div>
+  <div class="card-body text-success">
+    <table class="table table-hover">
+      <tbody>
+        <tr class="table-info">
+          <th scope="row">Issue </th>
+          <td>{{workunit.complid.issue}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Corrective Step</th>
+          <td>{{workunit.complid.corrective}}</td>
+        </tr>
+        <tr class="table-info">
+          <th>Attempts</th>
+          <td>
+            {% if workunit.complid.verification == True %}
+          {% if workunit.count == 1 %}
+          <button class="btn btn-success"> </button>
+          {% endif %}
+          {% if workunit.count == 2 %}
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-success"> </button>
+          {% endif %}
+          {% if workunit.count == 3 %}
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-success"> </button>
+          {% endif %}
+          {% if workunit.count == 4 %}
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-success"> </button>
+          {% endif %}
+          {% else %}
+
+          {% if workunit.count == 1 %}
+          <button class="btn btn-primary"> </button>
+          {% endif %}
+          {% if workunit.count == 2 %}
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          {% endif %}
+          {% if workunit.count == 3 %}
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          {% endif %}
+          {% if workunit.count == 4 %}
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          <button class="btn btn-primary"> </button>
+          {% endif %}
+          {% endif %}
+
+</td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer bg-transparent border-success " style="align-items: right;">
+   <button class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#abc{{workunit.id}}">View</button>
+   <div class="modal" id="abc{{workunit.id}}" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-success">
+          <h5 class="modal-title">Feedback</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% if workunit.complid.img %}
+          <img src="{{ workunit.complid.img.url }}" width="286px" height="150px" >
+          {% endif %}
+          <table class="table table-hover">
+            <tbody>
+              <tr class='table-success'>
+                <th scope='row'name="opendate" id="opendate">Opendate</th>
+                <td>{{workunit.opendate}}</td>
+              </tr>
+              <tr>
+                <th scope='row'name="issue" id="issue">Issue</th>
+                <td>{{workunit.complid.issue}}</td>
+              </tr>
+              <tr class='table-success'>
+                <th scope='row' name="corrective" id="corrective">Corrective</th>
+                <td>{{workunit.complid.corrective}}</td>
+              </tr>
+              <tr>
+                <th scope='row' name="accountdate" id="accda">Account Date</th>
+                <td>{{workunit.complid.accountdate}}</td>
+              </tr>
+              <tr class='table-success'>
+                <th scope='row'name="accountdate" id="champ">Champion</th>
+                <td>{{workunit.complid.cid.user}}</td>
+              </tr>
+              <tr>
+                <th scope='row' name="status" id="ststus">Status</th>
+                <td>Resolved</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+
+
+
+{% endif %}
+  {% endfor %}
+
+
+</div>
+</div>
+</div> -->
+
+
+{% endblock %}

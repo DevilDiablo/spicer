@@ -1,0 +1,179 @@
+{% extends 'champion/navbarchamp.html' %}
+{% load static %}
+{% block content %}
+
+<div class="text-center alert alert-dismissible alert-info">
+    <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+    <h4 class="alert-heading">Resolved Issues</h4>
+  </div>
+
+  {% for message in messages %}
+<div class="text-center alert alert-dismissible alert-primary">
+    <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+    {{message}}
+</div>
+{% endfor %}
+<div class="row" style="margin:1%">
+  {% for workunit in workunits %}
+  {% if  workunit.status == True %}
+  <div class="card border-info mb-4" id="card-wrapper" >
+    
+    <div class="text-center card-header text-light bg-info">Feedback ID:{{workunit.token}} | {{workunit.id}}</div>
+    
+    <div class="card-body">
+
+      <table class="table table-hover">
+        <tbody>
+        <tr class="table-info">
+          <th scope="row">Issue</th>
+          <td>{{workunit.issue}}</td>
+        </tr>
+        <tr >
+          <th scope="row">Corrective Step</th>
+          <td>{{workunit.corrective}}</td>
+        </tr>
+        <!-- <tr>
+          <th scope="row">Attempts</th>
+          <td>
+            {% if workunit.count == 1 %}
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 2 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 3 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 4 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+
+          </td>
+        </tr> -->
+
+        </tbody>
+      </table>
+      
+      </div>
+     <div class="card-footer bg-transparent border-info " style="align-items: right;">
+      
+      <button class="btn btn-info" data-bs-target="#view{{workunit.id}}"
+        data-bs-toggle="modal">View</button>
+    
+   </div>
+</div> 
+
+
+<div class="modal" id="view{{workunit.id}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+        <h5 class="modal-title text-light"><b>Feedback No : {{workunit.token}}</b></h5>
+        <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+       
+
+        {% if workunit.img %}
+        <div class="text-center">
+        <h6><b>Issue Image</b></h6>
+          <img src="{{ workunit.img.url }}" width="286px" height="150px" >
+        </div>
+          <br>
+          {% endif %}
+       
+            <!-- {% if workunit.img %}
+              Issue Image
+              <img src="{{ workunit.img.url }}" width="286px" height="150px" >
+          <br>
+          {% endif %} -->
+          <table class="table table-hover">
+            <tbody>
+          <tr class="table-info">
+            <th scope="row">Issue</th>
+            <td>{{workunit.issue}}</td>
+          </tr>
+          <tr >
+            <th scope="row" >Open date</th>
+            <td>{{workunit.opendate}}</td>
+          </tr>
+          
+          <tr class="table-info">
+            <th scope="row">Corrective</th>
+            <td>{{workunit.corrective}}</td>
+          </tr>
+          
+          <tr >
+            <th scope="row" >Account date</th>
+            <td>{{workunit.accountdate}}</td>
+          </tr>
+
+          <tr class="table-info">
+            <th scope="row">Champion</th>
+            <td>{{workunit.cid.user}}</td>
+          </tr>
+
+          <!-- <tr >
+            <th scope="row" >Attempt</th>
+            <td>{{workunit.count}}
+            {% if workunit.count == 1 %}
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 2 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 3 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+            {% if workunit.count == 4 %}
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            {% endif %}
+
+          </td>
+          </tr> -->
+          </tbody>
+        </table>
+
+        {% if workunit.resolved_img %}
+        <div class="text-center">
+        <h6><b>Resolved Image</b></h6>
+          <img src="{{ workunit.resolved_img.url }}" width="286px" height="150px" >
+        </div>
+          <br>
+          {% endif %}
+<!-- 
+        <label>Id : {{workunit.complid.id}}</label><br>
+        <label>Issue : {{workunit.complid.issue}}</label><br>
+        <label>Opendate : {{workunit.complid.opendate}} </label><br>
+        <label>Corrective : {{workunit.complid.corrective}}</label><br>
+        <label>Accountdate : {{workunit.complid.accountdate}} </label><br>
+        <label>Champion : {{workunit.complid.cid.user}}</label>
+         -->
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+{% endfor %}
+</div>
+{% endblock %}

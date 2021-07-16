@@ -1,0 +1,40 @@
+{% extends 'maintenance/tester/maintnavbar.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+<br>
+  {% for message in messages %}
+<div class="text-center alert alert-dismissible alert-primary">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{message}}
+{% endfor %}
+</div>
+<div class="container">
+<div>
+  <a class="btn btn-danger float-right" href="{% url 'maintenance:reviewerhomepage' %}">Go back</a>
+  <h1><b>{{machinedata.machine_name}} - ASSEMBLY</b></h1>
+  
+</div>
+<hr>
+
+
+<div class="list-group">
+  {% for category in categories %}
+  <!--
+  <a href="maintenance/testerhomepage/{{album.id}}" class="list-group-item list-group-item-action">{{machine}}</a>
+  -->
+  <a href="{% url 'maintenance:checkdetails' category.id %}" class="list-group-item list-group-item-action">{{category.assembly_name}}</a>
+  
+  
+  {% endfor %}
+</div>
+</div>
+<!--
+  {% for category in categories %}
+    <h2>{{category.assembly_name}}</h2>
+  {% endfor %}
+-->
+{% endblock %}

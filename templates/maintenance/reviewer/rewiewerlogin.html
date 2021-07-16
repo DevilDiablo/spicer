@@ -1,0 +1,31 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    input {
+        margin: 1vw 0vw;
+        text-align: center;
+    }
+</style>
+{% for message in messages %}
+<div class="text-center alert alert-dismissible alert-primary">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{message}}
+  </div>
+{% endfor %}
+<div style="height: 80vh;width: 100vw;" class="text-center d-flex justify-content-center align-items-center">
+    <div class="card border-info mb-4" style="max-width: 40rem;">
+        <div class="bg-info text-white card-header">Reviewer Login</div>
+        <form class="card-body" method="post" action="{% url 'maintenance:reviewerlogin' %}">
+            {% csrf_token %}
+              <input type="text" name="username" placeholder="username" class="form-control">
+              <input type="password" name="password" placeholder="password" class="form-control">
+              <input type="submit" value="login" class="btn btn-info">
+        </form>
+      </div>
+</div>
+
+{% endblock %}
+
+

@@ -1,0 +1,58 @@
+{% extends 'staf/navbarstaff.html' %}
+{% load static %}
+{% block content %}
+<div class="text-center alert alert-dismissible alert-info">
+  <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+  <h4 class="alert-heading">Upcoming</h4>
+</div>
+<br>
+
+{% for issue in issues %}
+
+    <div class="container">
+      
+      <div data-bs-toggle="collapse" data-bs-target="#demo{{issue.id}}" class="alert alert-success">
+        <h4 class="text-center" >{{issue.issuename}}</h4>
+      </div>
+      <div id="demo{{issue.id}}" class="collapse" >
+        
+        <div class="row" style="margin:1%">
+          {% for workunit in comps %}
+        {% if  workunit.verification == False and workunit.corrective != "" and workunit.complaint_issue.issuename == issue.issuename %}
+       <div class="card border-success mb-4" id="card-wrapper" >
+         
+         <div class="text-center card-header text-light bg-success">Feedback ID:{{workunit.token}}</div>
+         
+         <div class="card-body">
+      
+           <table class="table table-hover">
+             <tbody>
+             <tr class="table-success">
+               <th scope="row">Issue</th>
+               <td>{{workunit.issue}}</td>
+             </tr>
+             <tr >
+               <th scope="row">Corrective Step</th>
+               <td>{{workunit.corrective}}</td>
+             </tr>
+             </tbody>
+           </table>
+         
+           </div>
+          <div class="card-footer bg-transparent border-success " style="align-items: right;">
+          <a href="/editform/{{workunit.id}}/"> <button class="btn btn-success" >Edit</button></a>
+          <a href="/forwadform/{{workunit.id}}/"> <button class="btn btn-primary" >Forward</button></a>
+        </div>
+         <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+         
+      </div> 
+      {% endif %}
+      {% endfor %}
+     
+      </div>
+      
+      </div>
+       </div>
+       {% endfor %}
+
+{% endblock %}

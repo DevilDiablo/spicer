@@ -1,0 +1,324 @@
+{% extends 'hod/navbarhod.html' %}
+{% load static %}
+{% block content %}
+<script>
+  function seldep(){
+    selecteddip=document.getElementById("seldept").value;
+  if(selecteddip == 0){
+
+    var url = "{% url 'hodtobeasigned' %}";  
+  // Construct the full URL with "id"
+     document.location.href = url;
+  
+  
+  }
+  else{
+  var url = "{% url 'hodfilter' 111 %}";
+  var id = selecteddip;
+
+// Construct the full URL with "id"
+   document.location.href = url.replace('111', id);
+  }
+
+
+  }
+</script>
+
+<div class="text-center alert alert-dismissible alert-info">
+    <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+    <h4 class="alert-heading">Welcome {{username}}</h4>
+  </div>
+  <div>
+<div class="container" >
+  
+  <select style="width: 30%; float:right;" name="seldept" id="seldept" class='form-control' onchange="seldep();">
+            
+    <option value="0">Department</option>
+    <option value="0">All</option>
+
+    {% for i in list2 %}
+    <option value={{i.id}}>{{i.Dname}}</option>
+  {% endfor %}
+</select>
+
+  {% for message in messages %}
+<div class="text-center alert alert-dismissible alert-primary">
+    <button type="button" class="close" data-bs-dismiss="alert-primary">&times;</button>
+    {{message}}
+</div>
+{% endfor %}
+<h2 style="padding-left: 3rem;" class="text-info">{{dept.Dname}}</h2></div></div>
+<div class="selectroom">
+  <div class="container">
+<br>
+<br>
+
+     
+     
+     <div class="container">
+      
+     </div>
+      <div data-bs-toggle="collapse" data-bs-target="#demo" class="alert alert-success">
+  <h4 class="text-center" >Critical Issues</h4></div>
+    
+
+      <div class="collapse" id=demo>
+      <div class="row" >
+
+
+    {% for workunit in workunits %}
+    {% if workunit.crictcality == True and workunit.forward == True and workunit.corrective == "" %}
+
+  
+
+<div class="card border-success mb-4" id="card-wrapper" >
+      
+      <div class="text-center card-header text-light bg-success">Feedback ID :{{workunit.id}}</div>
+      
+      <div class="card-body">
+
+        <table class="table table-hover">
+          <tbody>
+          <tr class="table-success">
+            <th scope="row">Issue</th>
+            <td>{{workunit.issue}}</td>
+          </tr>
+          <tr >
+            <th scope="row">Corrective Step</th>
+            <td>{{workunit.corrective}}</td>
+          </tr>
+          </tbody>
+        </table>
+
+        </div>
+       <div class="card-footer bg-transparent border-success " style="align-items: right;">
+        <a href="/editformhod/{{workunit.id}}/"> <button class="btn btn-success" >edit</button></a>
+       <button class="btn btn-info" data-bs-target="#view{{workunit.id}}"
+       data-bs-toggle="modal">view</button>
+       <a href="/forwadform/{{workunit.id}}/"> <button class="btn btn-danger" >send back</button></a>
+      </div>
+
+      <div class="modal" id="view{{workunit.id}}" >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-info">
+              <h5 class="modal-title text-light">Feedback id : {{workunit.token}}</h5>
+              <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-hover">
+                <tbody>
+                <tr class="table-info">
+                  <th scope="row" name="opendate" id="opendate">opendate</th>
+                  <td>{{workunit.opendate}}</td>
+                </tr>
+                <tr >
+                  <th scope="row" name="issue" id="issue">Issue</th>
+                  <td>{{workunit.issue}}</td>
+                </tr>
+      <tr class="table-info">
+                  <th scope="row" name="corrective" id="corrective">Corrective </th>
+                  <td>{{workunit.corrective}}</td>
+                </tr>
+      <tr >
+                  <th scope="row" name="accountdate" id="accda">Account Date</th>
+                  <td>{{workunit.accountdate}}</td>
+                </tr>
+      <tr class="table-info" >
+                  <th scope="row" for="champion">Champion assigned </th>
+                  <td> {{workunit.cid.user.username}}</td>
+                </tr>
+
+          </tbody>
+        </table>
+      
+            </div>
+        
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+             
+            </div>
+          </div>
+      
+        </div>
+      </div>
+</div> 
+  
+{% endif %}
+{% endfor %}
+</div>
+
+    </div>
+
+      </div>
+    </div>
+    <br>
+    
+</div>
+<div class="modal" id="Ress">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Reassigned</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div data-bs-toggle="collapse" data-bs-target="#demo4" class="alert alert-info" class>
+      <h4 class="text-center">To be Reassinged</h4>
+    </div>
+   
+  <div class="collapse" id=demo4>
+  <div class="row" style="margin:1%">
+  {% for workunit in over %}
+  {% if workunit.complid.did == dept %}
+  
+    <div class="card border-info mb-4" id="card-wrapper" >
+      
+      <div class="text-center card-header text-light bg-info">Feedback ID:{{workunit.complid.id}}</div>
+      
+
+      <div class="card-body">
+     
+        <table class="table table-hover">
+          <tbody>
+          <tr class="table-info">
+            <th scope="row">Issue</th>
+            <td>{{workunit.complid.issue}}</td>
+          </tr>
+          <tr >
+            <th scope="row">Corrective Step</th>
+            <td>{{workunit.complid.corrective}}</td>
+          </tr>
+      <tr class="table-info">
+            <th scope="row">Champion:	</th>
+            <td>{{workunit.complid.cid.user}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Attempts:	</th>
+            {% if workunit.count == 1 %}
+            <td><button class="btn btn-primary"> </button></td>
+            {% endif %}
+            {% if workunit.count == 2 %}
+            <td><button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button></td>
+            {% endif %}
+            {% if workunit.count == 3 %}
+            <td> <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button></td>
+            {% endif %}
+            {% if workunit.count == 4 %}
+            <td> <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button>
+            <button class="btn btn-primary"> </button></td>
+            {% endif %}
+          </tr>
+          </tbody>
+        </table>
+     
+  <div class="card-footer bg-transparent border-info " style="align-items: right;">
+  <button class="btn btn-primary" data-bs-target="#ress{{workunit.id}}" data-bs-toggle="modal">Reassign</button>
+  
+  </div>
+  <div class="modal" id="ress{{workunit.id}}" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-info">
+          <h5 class="modal-title text-light">Feedback</h5>
+          <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="/reassign/{{workunit.id}}/" method="POST" onsubmit="return func1()">
+        <div class="modal-body">
+          <table class="table table-hover">
+            <tbody>
+            <tr class="table-info">
+              <th scope="row" name="opendate" id="opendate">opendate</th>
+              <td>{{workunit.complid.opendate}}</td>
+            </tr>
+            <tr >
+              <th scope="row" name="issue" id="issue">Issue</th>
+              <td>{{workunit.complid.issue}}</td>
+            </tr>
+  <tr class="table-info">
+              <th scope="row" name="corrective" id="corrective">Corrective </th>
+              <td>{{workunit.complid.corrective}}</td>
+            </tr>
+  <tr >
+              <th scope="row" name="accountdate" id="accda">Account Date</th>
+              <td>{{workunit.complid.accountdate}}</td>
+            </tr>
+  <tr class="table-info" >
+              <th scope="row" for="champion">Champion assigned </th>
+              <td> {{workunit.complid.cid.user.username}}</td>
+            </tr>
+  <tr >
+  <th scope="row" for="champion">Champion</th>
+              <td> <select name="champion" id="champion" class='form-control'>
+            
+             
+            <option value="0">None</option>
+            {% for i in list2 %}
+  
+            {% if i.user != workunit.complid.cid %}
+            <option value={{i.id}}>{{i.user}}</option>
+            {% endif %}
+          {% endfor %}
+          <br>
+
+         </select>
+        </th>
+      </tr>
+        
+         <tr class='table-info'>
+          <th scope='row'>Account Date</th>
+        <td><input type="date" name="champdate" id="champdate">
+        </td>
+        </tr>
+              
+        
+      </tbody>
+    </table>
+     </div>
+    
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-info" >Save Changes</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+         
+        </div>
+      </form>
+      </div>
+  
+    </div>
+  </div>
+  </div>
+  </div>
+  
+  {% endif %}
+  {% endfor %}
+  </div>
+  </div>
+  </div>
+<br>
+ 
+  
+
+{% endblock %}

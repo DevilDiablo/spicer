@@ -1,0 +1,77 @@
+{% extends 'maintenance/tester/maintnavbar.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div>
+    <br>
+    <h1>STANDARD_DESCRIPTION - {{desc}}</h1>
+</div>
+{{st.standard.id}}
+<hr>
+    <br>
+{% if size != 0 %}
+<table class="table table-hover" border="2">
+    <tbody>
+   <tr class="table-info" style="text-align: center;">
+    <th>TIME TAKEN</th>
+    {% if type == "B" %}
+    <th>Status</th>
+    {% elif type == "R" or type == "V" %}
+    <th>Value</th>
+    {% elif type == "T" %}
+    <th>R</th>
+    <th>Y</th>
+    <th>B</th>
+    {% endif %}
+    <th>Issue date</th>
+    <th>From date</th>
+    <th>To date</th>
+    <th>Image</th>
+    <th>Approve</th>
+   </tr>
+   {% for i in st %}
+   <tr style="text-align: center;">
+        <td>{{i.time}}</td>
+        {% if type == "B" %}
+        <td>{{i.status}}</td>
+        {% elif type == "R" or type == "V" %}
+        <td>{{i.value}}</td>
+        {% elif type == "T" %}
+        <td>{{i.r}}</td>
+        <td>{{i.y}}</td>
+        <td>{{i.b}}</td>
+        {% endif %}
+        <td>{{i.frequency.currentdate}}</td>
+        <td>{{i.frequency.Fromdate}}</td>
+        <td>{{i.frequency.todate}}</td>
+        <td><button class="btn btn-info" data-bs-target="#prev{{i.id}}"
+            data-bs-toggle="modal">Preview</button></td>
+            <td><a href="{% url 'maintenance:standapprove' i.standard_id.id i.id %}"><button class="btn btn-success" >
+            Approve</button></a></td>
+    </tr>
+    <div class="modal" id="prev{{i.id}}">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-info">
+              <h5 class="modal-title"><b>Image</b></h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+             <img src="{{i.img.url}} " width="100%" height="100%">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <h1 style="text-align: center;">There are no Entries of this standard type</h1>
+{% endif %}
+</div>
+{% endblock %}

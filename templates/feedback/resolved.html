@@ -1,0 +1,363 @@
+{% extends 'navbarlogout.html' %}
+{% load static %}
+{% block content %}
+
+<div class="text-center alert alert-dismissible alert-info">
+  <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+  <h4 class="alert-heading">Resolved Issues</h4>
+</div>
+<br>
+
+  <!-- This is for resolved issues Issues -->
+  <div class="container" >
+
+          <h2 style="padding-left: 3rem;" class="text-info">{{dept}}</h2><br>
+    
+    
+         <div class="container"></div>
+          <div data-bs-toggle="collapse" data-bs-target="#demo" class="alert alert-success">
+      <h4 class="text-center" >Resolved Issues </h4></div>
+        
+    
+          <div class="collapse" id=demo>
+          <div class="row" style="padding-top: 3rem;">
+    
+    
+        {% for workunit in workunits %}
+        {% if  workunit.status == True and workunit.verification == False %}
+    
+      
+    
+    <div class="card border-success mb-4" id="card-wrapper" >
+          
+          <div class="text-center card-header text-light bg-success">Feedback ID :{{workunit.id}}</div>
+          
+          <div class="card-body">
+    
+            <table class="table table-hover">
+              <tbody>
+              <tr class="table-success">
+                <th scope="row">Issue</th>
+                <td>{{workunit.issue}}</td>
+              </tr>
+              <tr >
+                <th scope="row">Corrective Step</th>
+                <td>{{workunit.corrective}}</td>
+              </tr>
+              </tbody>
+            </table>
+    
+            </div>
+            <div class="card-footer bg-transparent border-success " style="align-items: right;">
+              <button class="btn btn-success" data-bs-toggle="modal"  data-bs-target="#abc{{workunit.id}}">View</button>
+              <!-- <button><a href="#{{workunit.id}}">Show additional usage data</a></button> -->
+              <div class="modal" id="abc{{workunit.id}}" >
+               <div class="modal-dialog" role="document">
+                 <div class="modal-content">
+                   <div class="modal-header bg-success">
+                     <h5 class="modal-title text-light">Feedback</h5>
+                     <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                     </button>
+                   </div>
+                   <div class="modal-body">
+                     {% if workunit.img %}
+                     <p style="text-align:center;"><img src="{{ workunit.img.url }}" width="286px" height="150px" ></p>
+                     {% endif %}
+                     <table class='table table-hover'>
+                       <tbody>
+                         <tr class='table-success'>
+                           <th scope='row' name="opendate" id="opendate" >Opendate</th>
+                           <td>{{workunit.opendate}}</td>
+                         </tr>
+                         <tr>
+                           <th scope='row' name="issue" id="issue">Issue</th>
+                           <td>{{workunit.issue}}</td>
+                         </tr>
+                         <tr class='table-success'>
+                           <th scope='row'name="corrective" id="corrective">Corrective</th>
+                           <td>{{workunit.corrective}}</td>
+                         </tr>
+                         <tr >
+                           <th scope='row'name="accountdate" id="accda">Account Date</th>
+                           <td>{{workunit.accountdate}}</td>
+                         </tr>
+                         <tr class='table-success'>
+                           <th scope='row'name="accountdate" id="champ">Champion</th>
+                           <td>{{workunit.cid.user}}</td>
+                         </tr>
+                         <tr>
+                           <th scope='row'name="status" id="ststus">Status</th>
+                           <td>Resolved</td>
+                         </tr>
+                       </tbody>
+                     </table>
+                     
+                     
+                  
+                  
+           
+                   </div>
+                   <div class="modal-footer">
+                     <a href="/verified/{{workunit.id}}/"> <button type="button" class="btn btn-success" >Verify</button></a>
+                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           
+             </div>
+    
+          <div class="modal" id="view{{workunit.id}}" >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header bg-info">
+                  <h5 class="modal-title text-light">Feedback id : {{workunit.token}}</h5>
+                  <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table class="table table-hover">
+                    <tbody>
+                    <tr class="table-info">
+                      <th scope="row" name="opendate" id="opendate">opendate</th>
+                      <td>{{workunit.opendate}}</td>
+                    </tr>
+                    <tr >
+                      <th scope="row" name="issue" id="issue">Issue</th>
+                      <td>{{workunit.issue}}</td>
+                    </tr>
+          <tr class="table-info">
+                      <th scope="row" name="corrective" id="corrective">Corrective </th>
+                      <td>{{workunit.corrective}}</td>
+                    </tr>
+          <tr >
+                      <th scope="row" name="accountdate" id="accda">Account Date</th>
+                      <td>{{workunit.accountdate}}</td>
+                    </tr>
+          <tr class="table-info" >
+                      <th scope="row" for="champion">Champion assigned </th>
+                      <td> {{workunit.cid.user.username}}</td>
+                    </tr>
+                      
+          
+              </tbody>
+            </table>
+          
+                </div>
+            
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                 
+                </div>
+              </div>
+          
+            </div>
+          </div>
+    </div> 
+      
+    {% endif %}
+    {% endfor %}
+    </div>
+    
+        </div>
+    
+          </div>
+
+
+
+  <!-- <div class="container">
+    <div data-bs-toggle="collapse" data-bs-target="#demo3" class="alert alert-success" class>
+      <h4 class="text-center">Resolved Issues</h4>
+    </div><br>
+<div class="collapse" id=demo3>
+<div class="row" style="margin:1%">
+{% for workunit in workunits %}
+{% if  workunit.status == True and workunit.verification == False %}
+
+    <div class="card border-success mb-3" id="card-wrapper" >
+    <div class="card-header text-light bg-success border-success">Feedback ID: {{workunit.token}} | {{workunit.id}}</div>
+  <div class="card-body text-info">
+<table class='table table-hover'>
+<tbody>
+<tr class="table-success">
+<th scope='row'>Issue</th>
+<td>{{workunit.issue}}</td>
+</tr>
+<tr>
+<th scope='row'>Corrective Step</th>
+<td>{{workunit.corrective}}</td>
+  </tr>
+</tbody>
+</table>
+</div>
+  <div class="card-footer bg-transparent border-success " style="align-items: right;">
+   <button class="btn btn-success" data-bs-toggle="modal"  data-bs-target="#abc{{workunit.id}}">View</button>
+   <!-- <button><a href="#{{workunit.id}}">Show additional usage data</a></button> 
+   <div class="modal" id="abc{{workunit.id}}" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-success">
+          <h5 class="modal-title text-light">Feedback</h5>
+          <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% if workunit.img %}
+          <p style="text-align:center;"><img src="{{ workunit.img.url }}" width="286px" height="150px" ></p>
+          {% endif %}
+          <table class='table table-hover'>
+            <tbody>
+              <tr class='table-success'>
+                <th scope='row' name="opendate" id="opendate" >Opendate</th>
+                <td>{{workunit.opendate}}</td>
+              </tr>
+              <tr>
+                <th scope='row' name="issue" id="issue">Issue</th>
+                <td>{{workunit.issue}}</td>
+              </tr>
+              <tr class='table-success'>
+                <th scope='row'name="corrective" id="corrective">Corrective</th>
+                <td>{{workunit.corrective}}</td>
+              </tr>
+              <tr >
+                <th scope='row'name="accountdate" id="accda">Account Date</th>
+                <td>{{workunit.accountdate}}</td>
+              </tr>
+              <tr class='table-success'>
+                <th scope='row'name="accountdate" id="champ">Champion</th>
+                <td>{{workunit.cid.user}}</td>
+              </tr>
+              <tr>
+                <th scope='row'name="status" id="ststus">Status</th>
+                <td>Resolved</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          
+       
+       
+
+        </div>
+        <div class="modal-footer">
+          <a href="/verified/{{workunit.id}}/"> <button type="button" class="btn btn-success" >Verify</button></a>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+</div>
+
+
+
+{% endif %}
+  {% endfor %}
+
+
+</div>
+</div> -->
+
+  
+  <!-- This is for verified issues Issues -->
+  <div class="container">
+    <div data-bs-toggle="collapse" data-bs-target="#demo4" class="alert alert-info" class>
+      <h4 class="text-center">Verified Issues</h4>
+    </div>
+
+  
+<div class="collapse" id=demo4>
+<div class="row" style="margin:1%">
+{% for workunit in workunits %}
+{% if  workunit.status == True and workunit.verification == True %}
+
+  <div class="card border-info mb-4" id="card-wrapper">
+          <div class="card-header text-light bg-info border-success">Feedback ID: {{workunit.token}} | {{workunit.id}}</div>
+  <div class="card-body text-info">
+    <table class='table table-hover'>
+      <tbody>
+        <tr class="table-info">
+          <th scope='row'>Issue</th>
+          <td>{{workunit.issue}}</td>
+        </tr>
+        <tr >
+          <th scope='row'>Corrective Step</th>
+        <td>{{workunit.corrective}}</td>
+        </tr>
+      </tbody>
+    </table>          
+    
+  </div>
+  <div class="card-footer  bg-transparent border-info " style="align-items: right;">
+   <button class="btn btn-info" data-bs-toggle="modal"  data-bs-target="#abc{{workunit.id}}">View</button>
+   <!-- <button><a href="#{{workunit.id}}">Show additional usage data</a></button> -->
+   <div class="modal" id="abc{{workunit.id}}" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-info">
+          <h5 class="modal-title text-light">Feedback</h5>
+          <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% if workunit.img %}
+          <img src="{{ workunit.img.url }}" width="286px" height="150px" >
+          {% endif %}
+          <table class='table table-hover'>
+            <tbody>
+              <tr class='table-info'>
+                <th scope='row'  name="opendate" id="opendate">Opendate</th>
+                <td>{{workunit.opendate}}</td>
+              </tr>
+              <tr>
+                <th scope='row' name="issue" id="issue">Issue</th>
+                <td>{{workunit.issue}}</td>
+              </tr>
+              <tr class='table-info'>
+                <th scope='row' name="corrective" id="corrective">Corrective</th>
+                <td>{{workunit.corrective}}</td>
+              </tr>
+              <tr>
+                <th scope='row' name="accountdate" id="accda">Account Date </th>
+                <td>{{workunit.accountdate}}</td>
+              </tr>
+              <tr class='table-info'>
+                <th scope='row' name="accountdate" id="champ">Champion</th>
+                <td>{{workunit.cid.user}}</td>
+              </tr>
+              <tr>
+                <th scope='row'  name="status" id="ststus">Status</th>
+                <td> Resolved</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        </div>
+     
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+
+
+
+{% endif %}
+  {% endfor %}
+
+
+</div>
+</div>
+
+  
+
+{% endblock %}

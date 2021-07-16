@@ -1,0 +1,27 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% block content %}
+<style>
+  .card-header,.card-text{
+    text-align: center;
+  }
+</style> 
+
+
+  <div style="position: relative;" id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+   
+    <div class="carousel-inner">
+     
+      <div class="carousel-item active">
+        <div style="position: absolute;top: 40%;left: 3vw;">
+            
+            <h1 style="color: black;font-size: 4vw;">Transforming<br> the Future of Mobility</h1>
+            <br>
+            <p style="margin-left: 1%;font-size: 1vw;margin-right: 60%;">Whether our customers are looking to build a vehicle powered by a traditional or emerging energy source, we can support all of their drivetrain and propulsion needs, regardless of the power source.</p>     
+        </div>
+        <img  src="{% static 'img/carousel.png' %}" class="d-block w-100" alt="...">
+      </div>
+  </div>
+  
+
+{% endblock %}

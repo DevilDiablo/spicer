@@ -1,0 +1,61 @@
+
+{% extends 'staf/navbarstaff.html' %}
+{% block content %}
+<div style="height: 50vh;width:95%;margin:2.5%;padding-top: 3rem;" class="text-center d-flex justify-content-center align-items-center">
+    
+    
+     
+<div class="card border-info mb-3" style="max-width: 35rem; max-height: 60rem;">
+    <div class="card-header bg-info border-info">Feedback ID:{{workunits.id}}</div>
+    <div class="card-body text-info" style="text-align: left">
+      <form action="/atemptupdate/{{workunits.id}}/" method="POST">
+        {% csrf_token %}
+        <table class="table table-hover">
+          <tbody>
+          <tr class="table-info">
+            <th scope="row">Issue</th>
+            <td>{{workunits.complid.issue}}</td>
+          </tr>
+          <tr >
+            <th scope="row" name="opendate" id="opendate">Opendate</th>
+            <td>{{workunits.complid.opendate}}</td>
+          </tr>
+<tr class="table-info">
+            <th scope="row" for="corrective">Corrective Measures </th>
+            <td><input style="text-align: center;"type="text" name="corrective" id="corrective" value="{{workunits.complid.corrective}}"></td>
+          </tr>
+<tr >
+            <th scope="row" for="accountdate">Account Date</th>
+            <td>{{workunits.complid.accountdate}}</td>
+          </tr>
+<tr class="table-info">
+            <th scope="row" for="champion">Champion</th>
+            <td><select name="champion" id="champion" class='form-control'>
+   
+  <option value="0">None</option>
+  {% for i in list2 %}
+  {% if i.did == workunits.complid.did %}
+  <option value={{i.id}}>{{i.user}}</option>
+  {% endif %}
+{% endfor %}
+</select></td>
+          </tr>
+
+          </tbody>
+        </table>
+
+   
+    </div>
+    <div class="card-footer bg-transparent border-info " style="align-items: right;">
+
+        <input type="submit" class="btn btn-info" value="Save">
+
+     </div>
+    </form>
+
+  </div>
+</div>
+</div>
+
+
+{% endblock %} 

@@ -1,0 +1,94 @@
+{% extends 'navbarlogout.html' %}
+{% load static %}
+{% block content %}
+<script>
+  function htmlDecode(str) {
+    const doc = new DOMParser().parseFromString(str, "text/html");
+    return doc.documentElement.textContent;
+    }
+
+    var data_uri_list = new Array(26).fill(0);
+
+    // {% for image in images %}
+      
+    //   data_uri_list[{{forloop.counter}}-1] = '{{image.0}}';
+      // console.log('{{image}}');
+      // console.log('{{image.0}}');
+    //   console.log('debug : '+'{{image.0}}');
+    // {% endfor %}
+    try {
+      data_uri_list = JSON.parse(htmlDecode('{{images}}').replace(/'/g,"\"").replace(/"s/g,"'"));
+    } catch (error) {
+      
+    }
+    
+    // console.log();
+    document.querySelector("#images_json").value = JSON.stringify(data_uri_list);
+    
+    var data_uri_global;
+    function take_snapshot() {
+    Webcam.snap( function(data_uri) {
+      data_uri_global = data_uri;
+      document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
+    } );
+    }
+
+    
+    function show_image(image_number){
+      console.log("im here");
+      let data = data_uri_list[image_number];
+
+      let w = window.open('about:blank');
+      let image = new Image();
+      image.src = data;
+      setTimeout(function(){
+        w.document.write(image.outerHTML);
+      }, 0);
+    }
+</script>
+<div>
+<br>
+ <a href="{% url 'feedbackform' %}" style="padding-left: 2%;"><button class="btn btn-info"><h4>Back</h4></button></a><br>
+<br>
+</div>
+<div class="row" style="margin:1%;">
+  {% for i in issue %}
+  <div class="card border-info mb-4"  id="card2-wrapper"  >
+ 
+ <div class="text-center card-header text-light bg-info">Issue :&nbsp;{{i.issuename}}</div>
+ 
+ <div class="card-body text-info">
+   <div ></div>
+   <div class="card-img-top">
+    <img src="{{ i.issueimg.url }}" style="width:100%;height:100%;object-fit: cover;" >
+  
+<!-- end photo modal -->
+
+    </div>
+    <br>
+    
+    <table class="table table-hover">
+      <tbody>
+    <tr class="table-info">
+      <th scope="row"> Issue description</th>
+      <td>{{i.issuedesc}}</td>
+    </tr>
+    </tbody>
+  </table>
+   </div>
+   
+  
+<div class="card-footer bg-transparent border-info " style="align-items: right;">
+  <a href="/edituserform/{{i.id}}"> <div class="text-center card-header text-light bg-info">Edit</div></a>
+
+ 
+ </div>
+ <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+ </div>
+ 
+{% endfor %}
+
+</div> 
+
+
+{% endblock %}

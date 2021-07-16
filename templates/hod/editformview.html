@@ -1,0 +1,79 @@
+{% extends 'hod/navbarhod.html' %}
+{% block content %}
+
+<script>
+function func()
+  {
+  var current=new Date();
+  var date1=current.getDate();
+  date=document.getElementById("accountdate");
+  all=date.value.split("-");
+  year=current.getFullYear();
+  month=current.getMonth();
+  date2=date1+"-"+month+"-"+year;
+  if(all[2]<date1 && all[1]<month && all[0]<year)
+  {
+    alert("Enter the valid date");
+    return false;
+  }
+    return true;
+  }
+</script>
+
+<div style="height: 50vh;width:95%;margin:2.5%;padding-top: 3rem;" class="text-center d-flex justify-content-center align-items-center">
+    
+    
+     
+  <div class="card border-info mb-3" style="max-width: 35rem; max-height: 60rem;">
+   <div class="card-header text-light bg-info border-info">Feedback ID:{{workunits.token}}</div>
+      <div class="card-body text-info" style="text-align: left">
+        <form action="/formupdatehod/{{workunits.id}}/" method="POST" onsubmit="return func()">
+          {% csrf_token %}
+        <table class='table table-hover'>
+          <tbody>
+            <tr class='table-info'>
+              <th scope='row'>Issue</th>
+              <td>{{workunits.issue}}</td>
+            </tr>
+            <tr>
+              <th scope='row' name="opendate" id="opendate">Opendate</th>
+              <td>{{workunits.opendate}}</td>
+            </tr>
+            <tr class='table-info'>
+              <th scope='row' for="corrective">Corrective Measures</th>
+              <td> <input type="text" name="corrective" id="corrective" required></td>
+            </tr>
+            <tr>
+              <th scope='row'  for="accountdate">Account Date</th>
+              <td> <input type="date" name="accountdate" id="accountdate" required></td>
+            </tr>
+            <tr class='table-info'>
+              <th scope='row' for="champion">Champion</th>
+              <td> <select name="champion" id="champion" class='form-control' required>
+              
+                <option value="0">None</option>
+                {% for i in list2 %}
+                <option value={{i.id}}>{{i.user}}</option>
+              {% endfor %}
+              <br>
+             </select></td>
+            </tr>
+          </tbody>
+        </table>
+         
+  
+          
+         
+      </div>
+      <div class="card-footer bg-transparent border-info " style="align-items: right;">
+  
+          <input type="submit" class="btn btn-info" value="Save">
+  
+       </div>
+      </form>
+  
+    </div>
+  </div>
+  </div>
+
+{% endblock %} 

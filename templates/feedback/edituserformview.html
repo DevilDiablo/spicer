@@ -1,0 +1,225 @@
+{% extends "navbarlogout.html" %}
+
+{% block content %}
+
+<style>
+  #upload{
+           width:50% ;
+         }
+
+  @media screen and (max-width: 1000px) {
+    #upload {
+      width: 90%;
+    }
+  }
+  </style>
+
+<script>
+  
+
+function onnsub(){
+  var inp = document.getElementById('id_image');
+  var captureimg = document.getElementById("test").value;
+  if(inp.files.length != 0 && captureimg != ""){
+    document.getElementById('err').style.display = "contents";
+    document.getElementById('error-msg').innerHTML = "  You can select image or capture image not both     <br><p onclick='location.reload();'' class='text-info'><b>click here to reload</b></p>";
+    return false;
+  }
+  if (document.getElementById('crict').checked){
+  alert(captureimg);
+  if(inp.files.length == 0 && captureimg == "" ){
+    document.getElementById('err').style.display = "contents";
+    document.getElementById('error-msg').innerHTML = "You have selected critical please select an image or capture image";
+    return false;
+  }
+}
+
+}
+</script>
+<script>
+
+
+  
+
+  
+    var data_uri_global;
+    function take_snapshot() {
+    Webcam.snap( function(data_uri) {
+      data_uri_global = data_uri;
+      document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
+    } );
+    }
+
+    
+    function show_image(image_number){
+      console.log("im here");
+      let data = data_uri_list[image_number];
+
+      let w = window.open('about:blank');
+      let image = new Image();
+      image.src = data;
+      setTimeout(function(){
+        w.document.write(image.outerHTML);
+      }, 0);
+    }
+</script>
+
+<br>
+<div  class="text-center d-flex justify-content-center align-items-center">
+  
+    
+    
+  <!-- /saveuserform/{{i.id}}/ -->
+<div class="card border-info mb-3"   style=" max-height: 60rem; margin:3%">
+    <div class="card-header bg-info border-info"style="bg-primary">Department:{{depart}}</div>
+    <form action=" /saveuserform/{{i.id}}/" method="post" enctype="multipart/form-data" onsubmit="return onnsub();">
+          {% csrf_token %}
+         
+            <div class="card-body text-info" style="text-align: left">
+              <table class="table table-hover" >
+            <tbody>
+           
+              <tr class="table-info">
+        <th scope="row">Issue</th>	
+        <td> {{i.issuename}}</td>
+      </tr>
+      <tr>
+        <th scope="row"> Description</th>
+        <td>{{i.issuedesc}}</td>
+      </tr>
+          <tr class="table-info" >
+            <th scope="row" for="editissue">Edit Issue</th>
+            <td><input type="text" name="editissuetext" id="editissuetext" class="textboxchange" style="width:90%"  required></td>
+          </tr>
+          <tr>
+            
+            <th scope="row" for="id_image">Image</th>
+            <td>  </td>
+            </tr>
+            <tr>
+              <!-- <th scope="row"><input id="id_image" type="file" class="btn btn-info" name="image"  capture="camera"  style="width:80%"  value=""></th> -->
+            <th><div class="fileUpload" style="width:100%" >
+              <input type="file" id="id_image" name="id_image" class="upload"  >Upload</input>
+          </div></th>
+             <td>             
+               <div class="fileUpload"  id="photomodalbutton" type="button" class="upload" data-bs-toggle="modal" data-bs-target="#modalcaputure" id="editform-button">
+           
+                Capture
+               </div></td>
+               
+  
+   
+          </tr>
+          
+         
+         <input type="text" name="test" id="test" style="display: none;">
+            <tr class="table-primary" id = "err" style="display: none;" >
+              <th scope="row">Error</th>
+              <td><p id="error-msg" >You have selected critical please select an image or capture image</p> </td>
+            </tr>
+        
+      
+            <tr class="table-info">
+              <th>Criticality</th>
+              <td><input type="radio" id="crict" name="crictcality" value="1">
+              <label for="crict">Critical</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <br>
+              <input type="radio" id="noncrict" name="crictcality" value="0" checked="checked">
+              <label for="noncrict">Non-Critical</label><br><br>
+            </td>
+
+            </tr>
+      
+           
+        
+
+          </tbody>
+        </table>
+
+	<!-- <div id="my_camera1"></div> -->
+
+<div class="modal fade" id="modalcaputure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" onclick="document.getElementById('results').innerHTML=''" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <div class="container" id="my_camera2" style="width:320px; height:240px;padding: 0px;"></div> -->
+        <div id="my_camera1" style="width:320px; height:240px;padding: 0px;"></div>
+
+        <div class="container" style="width: fit-content;height: fit-content;" id="results"></div>
+    
+      </div>
+      <div class="modal-footer">
+        <input type=button value="Take Snapshot" onClick="take_snapshot()">
+        <button id="image_save_button" onclick="saveSnap();"  type="button" class="btn btn-secondary" data-bs-dismiss="modal">Save</button>
+        <!-- <form action="/workplace/{{workplace_id}}/" style="display: none;" method="post">
+          {% csrf_token %}
+
+        </form> -->
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- <div id="results" >Results</div> -->
+	
+	<!-- Webcam.min.js -->
+
+	<!-- Configure a few settings and attach camera -->
+	<script language="JavaScript">
+		Webcam.set({
+			width: 320,
+			height: 240,
+			image_format: 'jpeg',
+			jpeg_quality: 90
+		});
+		Webcam.attach( '#my_camera1' );
+	</script>
+	<!-- A button for taking snaps -->
+	
+	<!-- Code to handle taking the snapshot and displaying it locally -->
+	<script language="JavaScript">
+
+		function take_snapshot() {
+	
+			// take snapshot and get image data
+			Webcam.snap( function(data_uri) {
+				// display results in page
+				document.getElementById('results').innerHTML = 
+					'<img name="imageprev" id="imageprev" src="'+data_uri+'"/>';
+        
+			} );
+		}
+    function saveSnap(){
+			// Get base64 value from <img id='imageprev'> source
+			var base64image =  document.getElementById("imageprev").src;
+      document.getElementById("test").value = base64image;
+      console.log(base64image);
+				 console.log('Save successfully');
+				 //console.log(text);
+         
+
+		}
+	</script>
+	
+
+          <div class="card-footer bg-transparent border-info align-items-center" style="align-items: right;">
+            <input type="submit" class="btn btn-info" value="Save">
+</div>
+
+     </div>
+    </form>
+ </div>
+  </div>
+
+</div>
+
+
+
+{% endblock %} 

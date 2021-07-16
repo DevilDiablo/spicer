@@ -1,0 +1,192 @@
+{% extends 'navbarlogout.html' %}
+{% load static %}
+{% block content %}
+
+<div class="text-center alert alert-dismissible alert-info">
+    <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+    <h4 class="alert-heading">My Feedbacks</h4>
+  </div>
+  <div class="container">
+    
+  {% for message in messages %}
+<div class="text-center alert alert-dismissible alert-primary">
+    <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+    {{message}}
+{% endfor %}
+<br>
+<br>
+<div data-bs-toggle="collapse" data-bs-target="#demo" class="alert alert-success">
+  <h4 class="text-center" >Critical Issues</h4>
+</div>
+
+
+<div id="demo" class="collapse" >
+
+     <div class="row" style="margin:1%">
+    {% for workunit in workunits %}
+    {% if workunit.crictcality == True and workunit.forward == False %}
+    <div class="card border-success mb-4" id="card-wrapper" >
+      
+      <div class="text-center card-header text-light bg-success">Feedback ID : {{workunit.token}} | {{workunit.id}}</div>
+      
+      <div class="card-body">
+
+        <table class="table table-hover">
+          <tbody>
+          <tr class="table-success">
+            <th scope="row">Issue</th>
+            <td>{{workunit.issue}}</td>
+          </tr>
+          <tr>
+            <th scope="row">Corrective Step</th>
+            <td>{{workunit.corrective}}</td>
+          </tr>
+          <tr class="table-success">
+            <th scope="row">Status</th>
+            <td>{% if workunit.corrective == "" %}
+                Pending
+                {% elif workunit.status == True %}
+                Resolved
+                {% elif workunit.cid != " " and workunit.corrective != "" and workunit.accountdate != " " %}
+                Being Resolved
+                {% endif %}
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+
+        </div>
+       
+      <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+      
+</div> 
+  
+{% endif %}
+{% endfor %}
+</div>
+
+    </div>
+    <!---->
+      </div>
+    </div>
+  
+  </div>
+    <div class="container">
+      <div data-bs-toggle="collapse" data-bs-target="#demo1" class="alert alert-info" class>
+        <h4 class="text-center">Non Critical Issues</h4>
+      </div>
+      <!-- <div id="demo1" class="collapse" >
+        <br>
+           <div class="row" style="margin:1%">
+          {% for workunit in workunits %}
+          {% if workunit.crictcality == False %}
+      
+          <div class=" card border-success mb-3" style="width:30% ;margin:1%;">
+            
+            <div class="text-center card-header text-light bg-success">Feedback ID :{{workunit.id}}</div>
+            
+            <div class="card-body">
+              <h5 class="card-title">Issue:	&nbsp;{{workunit.issue}}</h5>
+              <p class="card-text">Corrective Step:	&nbsp;{{workunit.corrective}}</p>
+              </div>
+             <div class="card-footer bg-transparent border-success " style="align-items: right;">
+             <a href="/editform/{{workunit.id}}/"> <button class="btn btn-success" >Edit</button></a>
+            
+           </div>
+             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> --
+            
+      </div> 
+      
+        
+      {% endif %}
+      {% endfor %}
+      </div> -->
+    
+       <div id="demo1" class="collapse">
+       
+        <div class="row" style="margin:1%">
+          {% for workunit in workunits %}
+          {% if workunit.crictcality == False%}
+          <div class="card border-info mb-4" id="card-wrapper" >
+            
+            <div class="text-center card-header text-light bg-info">Feedback ID : {{workunit.token}} | {{workunit.id}}</div>
+            
+            <div class="card-body">
+              
+              <table class="table table-hover">
+                <tbody>
+                <tr class="table-info">
+                  <th scope="row">Issue</th>
+                  <td>{{workunit.issue}}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Corrective Step</th>
+                  <td>{{workunit.corrective}}</td>
+                </tr>
+                <tr class="table-info">
+                  <th scope="row">Status</th>
+                  <td>{% if workunit.corrective == "" %}
+                      Pending
+                      {% elif workunit.status == True %}
+                      Resolved
+                      {% elif workunit.cid != " " and workunit.corrective != "" and workunit.accountdate != " " %}
+                      Being Resolved
+                      {% endif %}
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+
+              </div>
+            
+            <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+            
+      </div> 
+        
+      {% endif %}
+      {% endfor %}
+      </div>
+          </div>
+          <!---->
+            </div>
+          </div>
+         
+        </div>
+      <!--div class="row">
+    {% for workunit in workunits %}
+    {% if workunit.crictcality == False%}
+    
+    <div class="col-sm-2 py-1" >
+      <div class="card border-success mb-3">
+      <div class="card-header bg-transparent border-success">Feedback ID:{{workunit.id}}</div>
+      <div class="card-body text-info">
+        <p class="card-title"><b>Issue:	&nbsp;{{workunit.issue}}</b></p>
+        <p class="card-text">Corrective Step:	&nbsp;{{workunit.corrective}}</p>
+      </div>
+      <div class="card-footer bg-transparent border-success " style="align-items: right;">
+       <a href="/editform/{{workunit.id}}/"> <button class="btn btn-info" >Edit</button></a>
+
+      </div>
+    </div>
+  </div>
+    {% endif %}
+      {% endfor %}
+    
+    </div>
+  </div> 
+ 
+</div>
+  <!-- This is for resolved issues Issues -->
+  
+
+
+</div>
+</div>
+
+  
+  
+    
+ 
+
+{% endblock %}
