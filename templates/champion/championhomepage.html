@@ -1,29 +1,417 @@
   {% extends 'champion/navbarchamp.html' %}
 {% load static %}
 {% block content %}
-<style>
-  .card-header,.card-text{
-    text-align: center;
-  }
-</style> 
-<div class="text-center alert alert-dismissible alert-info" style="position: relative;">
-  <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
-  <h4 class="alert-heading">Welcome {{username}}!</h4>
+<div class="text-center alert alert-dismissible alert-info">
+    <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+    <h4 class="alert-heading">Welcome {{username}}!</h4>
+  </div>
+
+  {% for message in messages %}
+<div class="text-center alert alert-dismissible alert-primary">
+    <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+    {{message}}
+</div>
+{% endfor %}
+<div class="container">
+  <br>
+  <br>
+  <div data-bs-toggle="collapse" data-bs-target="#demo" class="alert alert-success">
+    <h4 class="text-center" >Critical Issues</h4>
+  </div>
+  
+
+  <div id="demo" class="collapse">
+       <div class="row" style="margin:2%">
+      {% for workunit in workunits %}
+      {% if workunit.complid.crictcality == True and workunit.complid.status == False %}
+      <div class="card border-success mb-4" id="card-wrapper"  >
+        
+        <div class="text-center card-header text-light bg-success">Feedback ID : {{workunit.complid.token}} | {{workunit.complid.id}}</div>
+        
+        <div class="card-body">
+  
+          <table class="table table-hover">
+            <tbody>
+            <tr class="table-success">
+              <th scope="row">Issue</th>
+              <td>{{workunit.complid.issue}}</td>
+            </tr>
+            <tr >
+              <th scope="row">Corrective Step</th>
+              <td>{{workunit.complid.corrective}}</td>
+            </tr>
+            </tbody>
+          </table>
+  
+          </div>
+         <div class="card-footer bg-transparent border-success " style="align-items: right;">
+         <button class="btn btn-success" data-bs-toggle="modal"  data-bs-target="#abc{{workunit.complid.id}}">View</button>
+         <!-- <button><a href="#{{workunit.id}}">Show additional usage data</a></button> -->
+         <div class="modal" id="abc{{workunit.complid.id}}" >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-success">
+                <h5 class="modal-title text-light">Feedback</h5>
+                <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body ">
+                {% if workunit.complid.img %}
+                <div class = "text-center">
+                <img src="{{ workunit.complid.img.url }}" width="286px" height="150px" id="img1" ><br>
+              </div>
+                {% endif %}
+                <br>
+
+                <table class="table table-hover">
+                  <tbody>
+                  <tr class='table-success'>
+                    <th scope="row">Opendate</th>
+                    <td>{{workunit.complid.opendate}}</td>
+                  </tr>
+                  <tr >
+                    <th scope="row">Issue</th>
+                    <td>{{workunit.complid.issue}}</td>
+                  </tr>
+                  <tr  class='table-success'>
+                    <th scope="row">Corrective</th>
+                    <td>{{workunit.complid.corrective}}</td>
+                  </tr>
+                  <tr >
+                    <th scope="row">Account date</th>
+                    <td>{{workunit.complid.accountdate}}</td>
+                  </tr>
+                  <tr  class='table-success'>
+                    <th scope="row">Champion</th>
+                    <td>{{workunit.complid.cid.user}}</td>
+                  </tr>
+                  </tbody>
+                
+                  <tr >
+                  <form action="/resolveissue/{{workunit.complid.id}}/" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <th><label for="id_image">Upload Resolved Images</label></th>
+                 
+                  <td><input id="id_image" type="file" class="btn btn-info" name="rimage" value="rimage/noimage.png ">
+                  
+             </td>
+                
+                  
+                </tr>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <input type="submit" class="btn btn-info" value="Resolved">  
+               
+              </form>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+       </div>
+        <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+        
+  </div> 
+    
+  {% endif %}
+  {% endfor %}
+  </div>
+  
+      </div>
+      <!---->
+       
+      </div>
+
+      <div class="container">
+        <div data-bs-toggle="collapse" data-bs-target="#demo1" class="alert alert-info" class>
+          <h4 class="text-center">Non Critical Issues</h4>
+        </div>
+      
+         <div id="demo1" class="collapse">
+          <div class="row" style="margin:1%">
+            {% for workunit in workunits %}
+            {% if workunit.complid.crictcality == False and workunit.complid.status == False%}
+            <div class="card border-info mb-4" id="card-wrapper" >
+              
+              <div class="text-center card-header text-light bg-info">Feedback ID : {{workunit.complid.token}} | {{workunit.complid.id}}</div>
+              
+              <div class="card-body">
+                
+                <table class="table table-hover">
+                  <tbody>
+                  <tr class="table-info">
+                    <th scope="row">Issue</th>
+                    <td>{{workunit.complid.issue}}</td>
+                  </tr>
+                  <tr >
+                    <th scope="row">Corrective Step</th>
+                    <td>{{workunit.complid.corrective}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+  
+                </div>
+               <div class="card-footer bg-transparent border-info " style="align-items: right;">
+               
+                <button class="btn btn-info" data-bs-toggle="modal"  data-bs-target="#abc{{workunit.complid.id}}">View</button>
+                <div class="modal" id="abc{{workunit.complid.id}}" >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header bg-info">
+                        <h5 class="modal-title text-light">Feedback</h5>
+                        <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body ">
+                        {% if workunit.complid.img %}
+                        <div class = "text-center">
+                        <img src="{{ workunit.complid.img.url }}" width="286px" height="150px" id="img1" ><br>
+                      </div>
+                        {% endif %}
+                        <br>
+        
+                        <table class="table table-hover">
+                          <tbody>
+                          <tr class='table-info'>
+                            <th scope="row">Opendate</th>
+                            <td>{{workunit.complid.opendate}}</td>
+                          </tr>
+                          <tr >
+                            <th scope="row">Issue</th>
+                            <td>{{workunit.complid.issue}}</td>
+                          </tr>
+                          <tr class='table-info'>
+                            <th scope="row">Corrective</th>
+                            <td>{{workunit.complid.corrective}}</td>
+                          </tr>
+                          <tr >
+                            <th scope="row">Account date</th>
+                            <td>{{workunit.complid.accountdate}}</td>
+                          </tr>
+                          <tr class='table-info'>
+                            <th scope="row">Champion</th>
+                            <td>{{workunit.complid.cid.user}}</td>
+                          </tr>
+                          </tbody>
+                        
+                          <tr >
+                        <form action="/resolveissue/{{workunit.complid.id}}/" method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <th><label for="id_image">Upload Resolved Images</label></th>
+                          <br>
+                          <td><input id="id_image" type="file" class="btn btn-info" name="rimage" value="rimage/noimage.png ">
+                          
+                     </td>
+                          <br>
+                          
+                        </tr>
+                        </table>
+                      </div>
+                      <div class="modal-footer">
+                        <input type="submit" class="btn btn-info" value="Resolved">  
+                       
+                      </form>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             </div>
+              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+              
+        </div> 
+          
+        {% endif %}
+        {% endfor %}
+        </div>
+            </div>
+            <!---->
+              </div>
+
+      <!-- <h2>Current Issues</h2><br>
+      <button data-bs-toggle="collapse" data-bs-target="#demo" class="btn btn-info">
+        <h2>Crictial Issues</h2></button></div>
+      <hr>
+
+    <div class="collapse" id=demo>
+    <div class="row" style="padding-top: 3rem;">
+
+    
+    {% for workunit in workunits %}
+    {% if workunit.crictcality == True and workunit.status == False %}
+    <div class="col-sm-3 py-1" style="padding-left: 4rem; padding-right: 3rem;">
+      <div class="card border-success mb-3" style="width: 20rem; height: 25rem;">
+              <div class="card-header bg-transparent border-success">Feedback ID:{{workunit.id}}</div>
+      <div class="card-body text-info">
+        <h5 class="card-title">Issue:	&nbsp;{{workunit.issue}}</h5>
+        <p class="card-text">Corrective Step:	&nbsp;{{workunit.corrective}}</p>
+      </div>
+      <div class="card-footer bg-transparent border-success " style="align-items: right;">
+       <button class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#abc{{workunit.id}}">View</button>
+       <!-- <button><a href="#{{workunit.id}}">Show additional usage data</a></button> 
+       <div class="modal" id="abc{{workunit.id}}" >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Feedback</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center">
+              {% if workunit.img %}
+              <img src="{{ workunit.img.url }}" width="286px" height="150px" id="img1" >
+              {% endif %}
+              <label name="opendate" id="opendate">opendate:&nbsp;{{workunit.opendate}}</label><br>
+              <label name="issue" id="issue">Issue:&nbsp;{{workunit.issue}}</label><br>
+              <label name="corrective" id="corrective">Corrective:&nbsp;{{workunit.corrective}}</label><br>
+              <label name="accountdate" id="accda">Account Date:&nbsp;{{workunit.accountdate}}</label><br>
+              <label name="accountdate" id="champ">Champion:&nbsp;{{workunit.cid.user}}</label><br>
+            </div>
+            <div class="modal-footer">
+             <a href="/resolvedchamp/{{workunit.id}}/"> <button type="button" class="btn btn-success" >Resolved</button></a>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      </div>
+    </div>
+  </div>
+
+
+    
+  {% endif %}
+      {% endfor %}
+
+</div>
+  </div>
+
+
+  <!-- This is for non crictical Issues 
+  
+  <button data-bs-toggle="collapse" data-bs-target="#demo2" class="btn btn-info">
+    <h2>Non-Crictial Issues</h2></button></div>
+  <hr>
+
+<div class="collapse" id=demo2>
+<div class="row" style="padding-top: 3rem;">
+{% for workunit in workunits %}
+{% if workunit.crictcality == False and workunit.status == False %}
+<div class="col-sm-3 py-1" style="padding-left: 4rem; padding-right: 3rem;">
+  <div class="card border-success mb-3" style="width: 20rem; height: 25rem;">
+          <div class="card-header bg-transparent border-success">Feedback ID:{{workunit.id}}</div>
+  <div class="card-body text-info">
+    <h5 class="card-title">Issue:	&nbsp;{{workunit.issue}}</h5>
+    <p class="card-text">Corrective Step:	&nbsp;{{workunit.corrective}}</p>
+  </div>
+  <div class="card-footer bg-transparent border-success " style="align-items: right;">
+   <button class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#abc{{workunit.id}}">View</button>
+   <!-- <button><a href="#{{workunit.id}}">Show additional usage data</a></button> 
+   <div class="modal" id="abc{{workunit.id}}" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Feedback</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% if workunit.img %}
+          <img src="{{ workunit.img.url }}" width="286px" height="150px" >
+          {% endif %}
+          <label name="opendate" id="opendate">opendate:&nbsp;{{workunit.opendate}}</label><br>
+          <label name="issue" id="issue">Issue:&nbsp;{{workunit.issue}}</label><br>
+          <label name="corrective" id="corrective">Corrective:&nbsp;{{workunit.corrective}}</label><br>
+          <label name="accountdate" id="accda">Account Date:&nbsp;{{workunit.accountdate}}</label><br>
+          <label name="accountdate" id="champ">Champion:&nbsp;{{workunit.cid.user}}</label><br>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
 </div>
 
-  <div style="position: absolute;" id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-   
-    <div class="carousel-inner">
-     
-      <div class="carousel-item active">
-        <div style="position: absolute;top: 40%;left: 3vw;">
-            
-            <h1 style="color: black;font-size: 4vw;">Transforming<br> the Future of Mobility</h1>
-            <br>
-            <p style="margin-left: 1%;font-size: 1vw;margin-right: 60%;">Whether our customers are looking to build a vehicle powered by a traditional or emerging energy source, we can support all of their drivetrain and propulsion needs, regardless of the power source.</p>     
-        </div>
-        <img src="{% static 'img/carousel.png' %}" class="d-block w-100" alt="...">
-      </div>
+
+
+{% endif %}
+  {% endfor %}
+
+
+</div>
+</div>
+
+  <!-- This is for resolved issues Issues 
+  
+  <button data-bs-toggle="collapse" data-bs-target="#demo3" class="btn btn-info">
+    <h2>Resolved Issues</h2></button></div>
+  <hr>
+
+<div class="collapse" id=demo3>
+<div class="row" style="padding-top: 3rem;">
+{% for workunit in workunits %}
+{% if  workunit.status == True %}
+<div class="col-sm-3 py-1" style="padding-left: 4rem; padding-right: 3rem;">
+  <div class="card border-success mb-3" style="width: 20rem; height: 25rem;">
+          <div class="card-header bg-transparent border-success">Feedback ID:{{workunit.id}}</div>
+  <div class="card-body text-info">
+    <h5 class="card-title">Issue:	&nbsp;{{workunit.issue}}</h5>
+    <p class="card-text">Corrective Step:	&nbsp;{{workunit.corrective}}</p>
   </div>
+  <div class="card-footer bg-transparent border-success " style="align-items: right;">
+   <button class="btn btn-primary" data-bs-toggle="modal"  data-bs-target="#abc{{workunit.id}}">View</button>
+   <!-- <button><a href="#{{workunit.id}}">Show additional usage data</a></button> 
+   <div class="modal" id="abc{{workunit.id}}" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Feedback</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {% if workunit.img %}
+          <img src="{{ workunit.img.url }}" width="286px" height="150px" >
+          {% endif %}
+          <label name="opendate" id="opendate">opendate:&nbsp;{{workunit.opendate}}</label><br>
+          <label name="issue" id="issue">Issue:&nbsp;{{workunit.issue}}</label><br>
+          <label name="corrective" id="corrective">Corrective:&nbsp;{{workunit.corrective}}</label><br>
+          <label name="accountdate" id="accda">Account Date:&nbsp;{{workunit.accountdate}}</label><br>
+          <label name="accountdate" id="champ">Champion:&nbsp;{{workunit.cid.user}}</label><br>
+          <label name="status" id="ststus">Status:&nbsp;Resolved</label><br>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>
+</div>
+
+
+
+{% endif %}
+  {% endfor %}
+
+
+</div> -->
+
+ 
 
 {% endblock %}

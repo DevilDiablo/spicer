@@ -11,6 +11,7 @@ from .decorators import *
 from maintenance.models import *
 from maintenance.views import *
 
+
 # python standard lib
 import base64, secrets, io
 
@@ -75,10 +76,27 @@ def homepageview(request):
             return render(request, "feedback/Homepage.html")  
     else:
         return render(request, "feedback/Homepage.html")
-    
 
 def userloginpage(request):
     return render(request,"feedback/userloginpage.html")
+
+def userlogin(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    try:
+        User.objects.filter(username = username)[0]
+    except:
+        messages.add_message(request, messages.INFO, "invalid credentials ! check username and password")
+        return redirect("userloginpage")
+
+    if userlogindata.objects.filter(user = User.objects.filter(username = username)[0]).exists():
+        user = authenticate(username = username,password = password)
+
+        if user is not None:
+            login(request,user)
+            return redirect("userhomepage")
+    messages.add_message(request, messages.INFO, "invalid credentials ! check username and password")
+    return redirect(request.META["HTTP_REFERER"])
 
 @login_required(redirect_field_name='')
 def emaillog(request):
@@ -107,33 +125,15 @@ def qrcodeview(request,id):
         if mainhodlogindata.objects.filter(user=request.user).exists():
             return redirect(reverse('maintenance:machinedetailhod', kwargs={"machine_id": id}))
         elif reviewer.objects.filter(user=request.user).exists():
-            return redirect(reverse('maintenance:', kwargs={"machine_id": id}))
+            return redirect(reverse('maintenance:machinedetailrev', kwargs={"machine_id": id}))
         elif tester.objects.filter(user=request.user).exists():
-            return redirect(reverse('maintenance:', kwargs={"machine_id": id}))
+            return redirect(reverse('maintenance:machinedetail', kwargs={"machine_id": id}))
     else:
         messages.add_message(request, messages.INFO, "Login and scan the QR code")
         return redirect("homepage") 
 
-def userlogin(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    try:
-        User.objects.filter(username = username)[0]
-    except:
-        messages.add_message(request, messages.INFO, "invalid credentials ! check username and password")
-        return redirect("userloginpage")
-
-    if userlogindata.objects.filter(user = User.objects.filter(username = username)[0]).exists():
-        user = authenticate(username = username,password = password)
-
-        if user is not None:
-            login(request,user)
-            return redirect("userhomepage")
-    messages.add_message(request, messages.INFO, "invalid credentials ! check username and password")
-    return redirect(request.META["HTTP_REFERER"])
-
 @allowed_users(allowed_roles=['user'])
-# @login_required(login_url='userlogin')
+@login_required(login_url='userlogin')
 def userhomepage(request):
     if request.user.is_superuser:
         messages.add_message(request,messages.INFO,"you must login as user")
@@ -146,9 +146,8 @@ def userhomepage(request):
 def logoutuser(request):
     logout(request)
     return redirect("homepage")
-
 @allowed_users(allowed_roles=['user'])
-# @login_required(login_url='userlogin')
+@login_required(login_url='userlogin')
 def feedbackpage(request):
     list1=department.objects.all()
     context={"list":list1}
@@ -157,9 +156,8 @@ def feedbackpage(request):
     else:
         messages.info(request, 'Login to give feedback')
         return redirect("userloginpage")
-        
 @allowed_users(allowed_roles=['user'])
-# @login_required(login_url='userlogin')
+@login_required(login_url='userlogin')
 def myfeedbackpage(request):
     uname =request.user.username
     user_id = User.objects.get(username=uname)
@@ -168,7 +166,7 @@ def myfeedbackpage(request):
     context = {'workunits' : workunits,'username' : uname}
     return render(request,"feedback/myfeedbackform.html",context)
 @allowed_users(allowed_roles=['user'])
-# @login_required(login_url='userlogin')
+@login_required(login_url='userlogin')
 def feedbackval(request):
     issues=request.POST['issue']
     department1=request.POST['department']
@@ -199,9 +197,8 @@ def staflogin(request):
             return redirect("stafhomepage")
     messages.add_message(request, messages.INFO, "invalid credentials ! check username and password")
     return redirect(request.META["HTTP_REFERER"])
-
 @allowed_users(allowed_roles=['staff'])
-# @login_required(login_url='staflogin')
+@login_required(login_url='staflogin')
 def stafhomepage(request):
     staff_id = stafflogindata.objects.get(user=request.user)
     stafflogin_id = staff_id.did
@@ -241,7 +238,7 @@ def hodlogin(request):
 
 
 @allowed_users(allowed_roles=['hod'])
-# @login_required(login_url='hodlogin')
+@login_required(login_url='hodlogin')
 def hodhomepage(request):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -261,7 +258,7 @@ def hodhomepage(request):
 
 
 @allowed_users(allowed_roles=['hod'])
-# @login_required(login_url='hodlogin')
+@login_required(login_url='hodlogin')
 def hoddepartment(request):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -272,7 +269,7 @@ def hoddepartment(request):
 
 
 @allowed_users(allowed_roles=['staff'])
-# @login_required(login_url='staflogin')
+@login_required(login_url='staflogin')
 def editformview(request,taskid):
     workunits = complaint.objects.get(id=taskid)
     id1=workunits.did.id
@@ -282,7 +279,7 @@ def editformview(request,taskid):
 
 
 @allowed_users(allowed_roles=['hod'])
-# @login_required(login_url='hodlogin')
+@login_required(login_url='hodlogin')
 def editformviewhod(request,taskid):
     comp=complaint.objects.get(id=taskid)
     id1=comp.did.id
@@ -294,7 +291,7 @@ def editformviewhod(request,taskid):
 
 
 @allowed_users(allowed_roles=['user'])
-# @login_required(login_url='userlogin')
+@login_required(login_url='userlogin')
 def edituserform(request,taskid):
     workunits = issues.objects.get(id=taskid)
     dep=department.objects.get(Dname=workunits.issuedepartment)
@@ -303,7 +300,7 @@ def edituserform(request,taskid):
 
 
 @allowed_users(allowed_roles=['staff'])
-# @login_required(login_url='staflogin')
+@login_required(login_url='staflogin')
 def formsave1(request,taskid):
     staf1 = stafflogindata.objects.get(user=request.user)
     corrective1=request.POST['corrective']
@@ -331,7 +328,7 @@ def formsave1(request,taskid):
 
 
 @allowed_users(allowed_roles=['hod'])
-# @login_required(login_url='hodlogin')
+@login_required(login_url='hodlogin')
 def formsave1hod(request,taskid):
     corrective1=request.POST['corrective']
     accountdate=request.POST['accountdate']
@@ -348,7 +345,7 @@ def formsave1hod(request,taskid):
     return redirect("departments")
 
 @allowed_users(allowed_roles=['staff'])
-# @login_required(login_url='staflogin')
+@login_required(login_url='staflogin')
 def formsave2(request,taskid):
     corrective1=request.POST['corrective']
     champid=request.POST['champion']
@@ -363,7 +360,7 @@ def formsave2(request,taskid):
 
 
 @allowed_users(allowed_roles=['staff'])
-# @login_required(login_url='staflogin')
+@login_required(login_url='staflogin')
 def fwdform(request,taskid):
     entry=complaint.objects.get(id=taskid)
     entry.forward=True
@@ -372,7 +369,7 @@ def fwdform(request,taskid):
 
 
 @allowed_users(allowed_roles=['user'])
-# @login_required(login_url='userlogin')
+@login_required(login_url='userlogin')
 def allissues(request,taskid):
     dep=department.objects.get(id=taskid)
     issuesss=issues.objects.filter(issuedepartment=dep)
@@ -381,7 +378,7 @@ def allissues(request,taskid):
 
 
 @allowed_users(allowed_roles=['user'])
-# @login_required(login_url='userlogin')
+@login_required(login_url='userlogin')
 def saveuserform(request,taskid):
     workunits = issues.objects.get(id=taskid)
     dep=department.objects.get(Dname=workunits.issuedepartment)
@@ -401,8 +398,8 @@ def saveuserform(request,taskid):
     #complaint(uname=user,did=dep,issue=issue1,crictcality=crict,img=avatar_file,complaint_issue=workunits).save()
     return redirect("userhomepage")
 
-@allowed_users(allowed_roles=['hod'])
-# @login_required(login_url='hodlogin')
+@allowed_users(allowed_roles=['staff'])
+@login_required(login_url='staflogin')
 def updateatempt(request,taskid):
     workunits = attempts.objects.get(id=taskid)
     list2=championdata.objects.all()
@@ -410,7 +407,7 @@ def updateatempt(request,taskid):
     return render(request,"staf/updateformview.html",context)
 
 @allowed_users(allowed_roles=['staff'])
-# @login_required(login_url='staflogin')
+@login_required(login_url='staflogin')
 def accountdateupdate(request,taskid):
     date=request.POST['accdate']
     up=attempts.objects.get(id=taskid)
@@ -445,7 +442,7 @@ def championlogin(request):
     return redirect(request.META["HTTP_REFERER"])
 
 @allowed_users(allowed_roles=['champion'])
-# @login_required(login_url='championlogin')
+@login_required(login_url='championlogin')
 def championhomepage(request):
     if request.user.is_superuser:
         messages.add_message(request,messages.INFO,"you must login as staff")
@@ -461,7 +458,7 @@ def championhomepage(request):
     return render(request,"champion/championhomepage.html",context)
 
 @allowed_users(allowed_roles=['champion'])
-# @login_required(login_url='championlogin')
+@login_required(login_url='championlogin')
 def championresolved(request):
     championname =request.user.username
     
@@ -474,7 +471,7 @@ def championresolved(request):
     return render(request,"champion/championresolvedpage.html",context)
 
 @allowed_users(allowed_roles=['champion'])
-# @login_required(login_url='championlogin')
+@login_required(login_url='championlogin')
 def resolvedchamp(request,taskid):
     entry=complaint.objects.get(id=taskid)
     entry.status=True
@@ -491,7 +488,7 @@ def verified(request,taskid):
     return redirect("userhomepage")
 
 @allowed_users(allowed_roles=['staff'])
-# @login_required(login_url='staflogin')
+@login_required(login_url='staflogin')
 def tobeasigned(request):
     uname =request.user.id
     staff_id = stafflogindata.objects.get(user=uname)
@@ -512,7 +509,7 @@ def tobeasigned(request):
     return render(request,"staf/tobeasigned.html",context)
 
 @allowed_users(allowed_roles=['staff'])
-# @login_required(login_url='staflogin')
+@login_required(login_url='staflogin')
 def asignedissues(request):
     uname =request.user.id
     staff_id = stafflogindata.objects.get(user=uname)
@@ -522,7 +519,7 @@ def asignedissues(request):
     return render(request,"staf/asignedissues.html",context)
 
 @allowed_users(allowed_roles=['staff'])
-# @login_required(login_url='staflogin')
+@login_required(login_url='staflogin')
 def resolvedissues(request):
     uname =request.user.id
     staff_id = stafflogindata.objects.get(user=uname)
@@ -532,7 +529,7 @@ def resolvedissues(request):
     return render(request,"staf/resolved.html",context)
 
 @allowed_users(allowed_roles=['user'])
-# @login_required(login_url='userlogin')
+@login_required(login_url='userlogin')
 def resolvedissuesuser(request):
     uname =request.user.id
     uname =request.user.username
@@ -543,7 +540,7 @@ def resolvedissuesuser(request):
     return render(request,"feedback/resolved.html",context)
 
 @allowed_users(allowed_roles=['staff'])
-# @login_required(login_url='staflogin')
+@login_required(login_url='staflogin')
 def championreassign(request,id):
     att=attempts.objects.get(id=id)
     comp=complaint.objects.get(id=att.complid.id)
@@ -557,7 +554,7 @@ def championreassign(request,id):
     return redirect("stafhomepage") 
 
 @allowed_users(allowed_roles=['user'])
-# @login_required(login_url='userlogin')
+@login_required(login_url='userlogin')
 def resolvedissuesuser(request):
     uname =request.user.id
     uname =request.user.username
@@ -568,7 +565,7 @@ def resolvedissuesuser(request):
     return render(request,"feedback/resolved.html",context)
 
 @allowed_users(allowed_roles=['champion'])
-# @login_required(login_url='championlogin')
+@login_required(login_url='championlogin')
 def resolveissue(request,taskid):
     workunit= complaint.objects.get(id=taskid)
     resolvepic = request.FILES['rimage'] if 'rimage' in request.FILES else "noimage.png"
@@ -579,7 +576,7 @@ def resolveissue(request,taskid):
     return redirect("championhomepage")
 
 @allowed_users(allowed_roles=['staff'])
-# @login_required(login_url='staflogin')
+@login_required(login_url='staflogin')
 def staffupcoming(request):
     staff=stafflogindata.objects.get(user=request.user)
     # comps=complaint.objects.filter(did=staff.did,verification=False).order_by('accountdate')

@@ -8,9 +8,9 @@
 </style> 
 {% for message in messages %}
 <div class="text-center alert alert-dismissible alert-primary">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
     {{message}}
-    </div>
+  </div>
 {% endfor %}
 
   <div style="position: relative;" id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
@@ -24,7 +24,7 @@
             <br>
             <p style="margin-left: 1%;font-size: 1vw;margin-right: 60%;">Whether our customers are looking to build a vehicle powered by a traditional or emerging energy source, we can support all of their drivetrain and propulsion needs, regardless of the power source.</p>     
         </div>
-        <img  src="{% static 'img/carousel.png' %}" class="d-block w-100" alt="...">
+        <img src="{% static 'img/carousel.png' %}" class="d-block w-100" alt="...">
       </div>
   </div>
   

@@ -6,7 +6,7 @@
   <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
   <h4 class="alert-heading">Resolved Issues</h4>
 </div>
-<br>
+
 
   <!-- This is for resolved issues Issues -->
   <div class="container" >
@@ -29,8 +29,8 @@
       
     
     <div class="card border-success mb-4" id="card-wrapper" >
-          
-          <div class="text-center card-header text-light bg-success">Feedback ID :{{workunit.id}}</div>
+
+          <div class="text-center card-header text-light bg-success">Feedback ID :{{workunit.token}}</div>
           
           <div class="card-body">
     
@@ -43,6 +43,10 @@
               <tr >
                 <th scope="row">Corrective Step</th>
                 <td>{{workunit.corrective}}</td>
+              </tr>
+              <tr class="table-success">
+                <th scope="row">Resolved Date</th>
+                <td>{{workunit.resolved_date}}</td>
               </tr>
               </tbody>
             </table>
@@ -61,9 +65,13 @@
                      </button>
                    </div>
                    <div class="modal-body">
-                     {% if workunit.img %}
-                     <p style="text-align:center;"><img src="{{ workunit.img.url }}" width="286px" height="150px" ></p>
-                     {% endif %}
+                    {% if workunit.resolved_img %}
+        <div class="text-center">
+        <h6><b>Resolved Image</b></h6>
+          <img src="{{ workunit.resolved_img.url }}" width="286px" height="150px" >
+        </div>
+          <br>
+          {% endif %}
                      <table class='table table-hover'>
                        <tbody>
                          <tr class='table-success'>
@@ -86,7 +94,11 @@
                            <th scope='row'name="accountdate" id="champ">Champion</th>
                            <td>{{workunit.cid.user}}</td>
                          </tr>
-                         <tr>
+                         <tr >
+                          <th scope='row'name="accountdate" id="accda">Resolved Date</th>
+                          <td>{{workunit.resolved_date}}</td>
+                        </tr>
+                         <tr class='table-success'>
                            <th scope='row'name="status" id="ststus">Status</th>
                            <td>Resolved</td>
                          </tr>
@@ -140,8 +152,15 @@
                       <th scope="row" for="champion">Champion assigned </th>
                       <td> {{workunit.cid.user.username}}</td>
                     </tr>
-                      
-          
+                    <tr >
+                      <th scope="row" name="accountdate" id="accda">Resolved Date</th>
+                      <td>{{workunit.resolved_date}}</td>
+                    </tr>
+                    <tr class="table-info">
+                      <th scope="row" name="accountdate" id="accda">Verified Date</th>
+                      <td>{{workunit.verified_date}}</td>
+                    </tr>
+                    
               </tbody>
             </table>
           
@@ -289,6 +308,14 @@
           <th scope='row'>Corrective Step</th>
         <td>{{workunit.corrective}}</td>
         </tr>
+        <tr >
+          <th scope="row" name="accountdate" id="accda">Resolved Date</th>
+          <td>{{workunit.resolved_date}}</td>
+        </tr>
+        <tr class="table-info">
+          <th scope="row" name="accountdate" id="accda">Verified Date</th>
+          <td>{{workunit.verified_date}}</td>
+        </tr>
       </tbody>
     </table>          
     
@@ -306,9 +333,13 @@
           </button>
         </div>
         <div class="modal-body">
-          {% if workunit.img %}
-          <img src="{{ workunit.img.url }}" width="286px" height="150px" >
-          {% endif %}
+          {% if workunit.resolved_img %}
+          <div class="text-center">
+          <h6><b>Resolved Image</b></h6>
+            <img src="{{ workunit.resolved_img.url }}" width="286px" height="150px" >
+          </div>
+            <br>
+            {% endif %}
           <table class='table table-hover'>
             <tbody>
               <tr class='table-info'>
@@ -334,6 +365,14 @@
               <tr>
                 <th scope='row'  name="status" id="ststus">Status</th>
                 <td> Resolved</td>
+              </tr>
+              <tr class="table-info" >
+                <th scope="row" name="accountdate" id="accda">Resolved Date</th>
+                <td>{{workunit.resolved_date}}</td>
+              </tr>
+              <tr x>
+                <th scope="row" name="accountdate" id="accda">Verified Date</th>
+                <td>{{workunit.verified_date}}</td>
               </tr>
             </tbody>
           </table>

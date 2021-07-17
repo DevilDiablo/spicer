@@ -24,7 +24,7 @@
     <br>
     <div class="row" style="margin:1%; ">
       {% for workunit in workunits %}
-      {% if workunit.status == True %}
+      {% if workunit.status == True and workunit.verification == False %}
       <div class="card border-success mb-4" id="card-wrapper" >
         
         <div class="text-center card-header text-light bg-success">Feedback ID:{{workunit.token}}</div>
@@ -113,10 +113,10 @@
 
   <!--Verified-->
   <div class="container">
-    <div data-bs-toggle="collapse" data-bs-target="#demo2" class="alert alert-success" class>
+    <div data-bs-toggle="collapse" data-bs-target="#demo3" class="alert alert-success" class>
       <h4 class="text-center">Verified Issues</h4>
     </div>
-    <div id="demo2" class="collapse" >
+    <div id="demo3" class="collapse" >
       <br>
       <div class="row" style="margin:1%; ">
         {% for workunit in workunits %}

@@ -56,11 +56,11 @@
                   <a class="nav-link" href="#">myFeedback</a>
                 </li> -->
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'championhomepage' %}">Home</a>
+                  <a class="nav-link" href="{% url 'homepage' %}">Home</a>
                 </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'championtoberesolved' %}">To Be Resolved</a>
+                  <a class="nav-link" href="{% url 'championhomepage' %}">To Be Resolved</a>
                 </li>
                 {% endif %}
           

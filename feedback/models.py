@@ -37,8 +37,6 @@ class championdata(models.Model):
     def __str__(self):
         return self.user.username
 
-
-
 class issues(models.Model):
     issuename=models.CharField(max_length=100)
     issuedesc=models.CharField(max_length=255)

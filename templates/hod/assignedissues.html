@@ -35,7 +35,7 @@
 <div class="alert alert-info">
   <h4 class="text-center" >Assigned Issues</h4>
 </div>
-<div class="container">
+<div class="container" >
 <select style="width: 30%; float:right;" name="seldept" id="seldept" class='form-control' onchange="seldep();">
             
     <option value="0">Department</option>
@@ -45,9 +45,8 @@
     <option value={{i.id}}>{{i.Dname}}</option>
   {% endfor %}
 </select>
-<br>
-<h2 style="padding-left: 3rem;" class="text-info">{{dept.Dname}}</h2>
-</div>
+<h2 style="padding-left: 3rem;" class="text-info">{{dept.Dname}}</h2></div>
+
 
 <!-- 
 <div>
@@ -127,7 +126,7 @@
 </div>
  -->
 
-<div class="row" style="margin:4%">
+<div class="row" style="margin:1%">
   {% for workunit in att %}
   <div class="card border-info mb-4" id="card-wrapper" >
     
@@ -204,7 +203,6 @@
       </div>
      <div class="card-footer bg-transparent border-info " style="align-items: right;">
       
-      <a href="/updateatempt/{{workunit.id}}/"> <button class="btn btn-primary" >Edit</button></a>
       <button class="btn btn-info" data-bs-target="#view{{workunit.id}}"
         data-bs-toggle="modal">View</button>
     

@@ -5,7 +5,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns=[
-    path('checkqrcode/<int:id>/',qrcodeview,name="qrcodeview"),
     path('',homepageview,name = "homepage"),
     path('userloginpage/',userloginpage,name = "userloginpage"),
     path('userlogin/',userlogin,name="userlogin"),
