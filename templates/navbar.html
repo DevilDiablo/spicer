@@ -35,16 +35,16 @@
       <ul class="navbar-nav ml-auto " >
         <li class="nav-item" style="margin-left: 700px;">
             <li class="nav-item dropdown">
-            <a  class="btn btn-info" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a  class="btn btn-info" href="{% url 'emaillogin'  %}"  id="navbarDropdown" role="button" aria-expanded="false">
           Maintenance
         </a>
-        <ul class="dropdown-menu dropdown-primary " aria-labelledby="navbarDropdown">
+        <!-- <ul class="dropdown-menu dropdown-primary " aria-labelledby="navbarDropdown">
     <li><a class="dropdown-item" href="{% url 'maintenance:testerloginpage' %}">Tester</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="{% url 'maintenance:reviewerloginpage' %}">Reviewer</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="{% url 'maintenance:hodloginpage'%}">HOD</a></li>
-        </ul>
+        </ul> -->
         </li>
         </li>
     </ul>
@@ -52,10 +52,10 @@
   <ul class="navbar-nav ml-auto">
     <li class="nav-item" style="margin-left: 40px;">
         <li class="nav-item dropdown">
-    <a class="btn btn-info" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="btn btn-info" href="{% url 'emaillogin'  %}" id="navbarDropdown" role="button"  aria-expanded="false">
       Feedback
     </a>
-    <ul class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdown">
+    <!-- <ul class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdown">
 <li><a class="dropdown-item" href="{% url 'userloginpage' %}">User</a></li>
 <li><hr class="dropdown-divider"></li>
 <li><a class="dropdown-item" href="{% url 'stafloginpage' %}">Staff Person</a></li>
@@ -63,7 +63,7 @@
 <li><a class="dropdown-item" href="{% url 'hodloginpage' %}">HOD</a></li>
 <li><hr class="dropdown-divider"></li>
 <li><a class="dropdown-item" href="{% url 'championloginpage' %}">Champion</a></li>
-   </ul>
+   </ul> -->
   </li>
       </li>
   </ul>

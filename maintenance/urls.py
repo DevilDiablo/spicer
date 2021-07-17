@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 app_name = 'maintenance'
 
 urlpatterns=[
-    path('checkqrcode/<int:id>/',qrcodeview,name="qrcodeview"),
+    # path('emaillogin/',emaillog,name="emaillogin"),
     #####################################################################
     path('testerloginpage/',testerloginpage,name = "testerloginpage"),
     path('testerlogin/',testerlogin,name="testerlogin"),

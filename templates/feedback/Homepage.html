@@ -6,7 +6,12 @@
     text-align: center;
   }
 </style> 
-
+{% for message in messages %}
+<div class="text-center alert alert-dismissible alert-primary">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{message}}
+    </div>
+{% endfor %}
 
   <div style="position: relative;" id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
    
