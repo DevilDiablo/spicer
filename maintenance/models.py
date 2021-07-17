@@ -37,7 +37,8 @@ class machine(models.Model):
         return self.machine_name
 
     def save(self, *args, **kwargs):
-        qrcode_img = qrcode.make('http://127.0.0.1:8000/maintenance/checkdetails/id/')
+        https://spicer-feedback.herokuapp.com/maintenance/machinedetailrev/1/
+        qrcode_img = qrcode.make('http://spicer-feedback.herokuapp.com/maintenance/checkqrcode/{self.id}/')
         canvas = Image.new('RGB', (500, 500), 'white')
         draw = ImageDraw.Draw(canvas)
         canvas.paste(qrcode_img)

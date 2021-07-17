@@ -551,3 +551,6 @@ def standapproved(request,taskid):
         desc=stan.standard_desc
         context={'st':st,'type':stan.standard_type,'size':size,'desc':desc,'years':years}
     return render(request,'maintenance/reviewer/standapproved.html',context)
+
+def qrcodeview(request,id):
+    pass
