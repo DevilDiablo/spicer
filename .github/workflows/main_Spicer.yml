@@ -59,4 +59,4 @@ jobs:
         with:
           app-name: 'Spicer'
           slot-name: 'production'
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_a08dbedbe03a47edb8b25cd4a89db88d }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_df8ca27c900648e09f1800ed063f5517 }}
