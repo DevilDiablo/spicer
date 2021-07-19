@@ -336,11 +336,11 @@ def formsave1hod(request,taskid):
     print(chap)
     entry=complaint.objects.get(id=taskid)
     entry.accountdate=accountdate
-    entry.cid=chap.user
+    entry.cid=chap
     entry.corrective=corrective1
     entry.save()
     attempts.objects.create(complid=entry,champid=chap,count=1).save()
-    return redirect("departments")
+    return redirect("hodtobeasigned")
 
 @allowed_users(allowed_roles=['staff'])
 @login_required(login_url='staflogin')
@@ -506,13 +506,12 @@ def tobeasigned(request):
     "over":over,"sorts":sorts,"du":du,"list2":list2,"du1":du1}
     return render(request,"staf/tobeasigned.html",context)
 
-@allowed_users(allowed_roles=['staff'])
-@login_required(login_url='staflogin')
+
 def asignedissues(request):
-    uname =request.user.id
-    staff_id = stafflogindata.objects.get(user=uname)
+    staff_id = stafflogindata.objects.get(user=request.user)
     stafflogin_id =staff_id.did
     atempttabel =attempts.objects.filter(complid__did=stafflogin_id,complid__accountdate__gte=datetime.date.today())
+    print(atempttabel)
     context = {'username' :request.user,'dept':stafflogin_id,'att':atempttabel}
     return render(request,"staf/asignedissues.html",context)
 

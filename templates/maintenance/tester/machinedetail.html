@@ -6,12 +6,17 @@
 
 
 <br>
-  {% for message in messages %}
 <div class="text-center alert alert-dismissible alert-primary">
+  {% for message in messages %}
+
     <button type="button" class="close" data-dismiss="alert">&times;</button>
     {{message}}
+  
+ 
 {% endfor %}
 </div>
+
+<br>
 <div class="container">
 <div>
   <a class="btn btn-danger float-right" href="{% url 'maintenance:testerhomepage1' %}">Go back</a>

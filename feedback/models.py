@@ -84,5 +84,5 @@ class attempts(models.Model):
     count=models.IntegerField()
 
     def __str__(self):
-        return '{} {} {} {}'.format(self.complid.id,self.complid.did.Dname,self.champid.user.user.username,self.count)
+        return '{} {} {} {}'.format(self.complid.id,self.complid.did.Dname,self.champid.user.username,self.count)
 

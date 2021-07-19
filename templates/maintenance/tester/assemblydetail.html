@@ -334,7 +334,7 @@ hello(sid);
       {% if stan.standard_id.check_id == checkpointdata %}
       <div class="container">
 
-     <div class="list-group-item list-group-item-action bg-info" onclick="open1a('{{stan.id}}','{{stan.standard_type}}','{{stan.standard_id.check_id.fromdate}}','{{stan.standard_id.check_id.nextdate}}','{{stan.standard_id.time}}','{{stan.standard_id.id}}')"   >{{stan.standard_id.check_id.check_desc}} <button >strt</button>
+     <div class="list-group-item list-group-item-action bg-info">{{stan.standard_id.check_id.check_desc}} <button onclick="open1a('{{stan.id}}','{{stan.standard_type}}','{{stan.standard_id.check_id.fromdate}}','{{stan.standard_id.check_id.nextdate}}','{{stan.standard_id.time}}','{{stan.standard_id.id}}')" class="btn btn-secondary" >start</button>
       <div class="modal" id="aa{{stan.id}}">
         <div class="modal-dialog bg-info" role="document">
           <div class="modal-content">
@@ -399,7 +399,7 @@ hello(sid);
       {% if stan.standard_id.check_id == checkpointdata %}
       <div class="container">
 
-      <div class="list-group-item list-group-item-action bg-info"  >{{stan.standard_id.check_id.check_desc}} <button onclick="open1b('{{stan.id}}','{{stan.standard_type}}','{{stan.standard_id.check_id.fromdate}}','{{stan.standard_id.check_id.nextdate}}','{{stan.standard_id.time}}','{{stan.standard_id.id}}')" >strt</button>
+      <div class="list-group-item list-group-item-action bg-info"  >{{stan.standard_id.check_id.check_desc}} <button onclick="open1b('{{stan.id}}','{{stan.standard_type}}','{{stan.standard_id.check_id.fromdate}}','{{stan.standard_id.check_id.nextdate}}','{{stan.standard_id.time}}','{{stan.standard_id.id}}')" class="btn btn-secondary" >start</button>
         <!-- <div class="list-group-item list-group-item-action bg-info">{{stan.check_id.check_desc}}  <button id="myBtn" class="btn btn-secondary" 
         data-bs-target="#a{{stan.id}}" data-bs-toggle="modal">start</button> -->
        <div class="modal" id="b{{stan.id}}">
