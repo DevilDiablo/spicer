@@ -30,15 +30,15 @@
 </div>
   
 
-    
+
   {% for message in messages %}
 <div class="text-center alert alert-dismissible alert-primary">
     <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
     {{message}}
 {% endfor %}
 <br>
-
-<select name="seldept" id="seldept" class='form-control' onchange="seldep();">
+<div class="container">
+<select style="width:30%; float:right;" name="seldept" id="seldept" class='form-control' onchange="seldep();">
             
     <option value="0">Department</option>
     <option value="0">All</option>
@@ -46,8 +46,9 @@
     {% for i in dept1 %}
     <option value={{i.id}}>{{i.Dname}}</option>
   {% endfor %}
-</select>
-
+</select></div>
+ <br>
+ <br>    
 <div class="container">
   <div data-bs-toggle="collapse" data-bs-target="#demo2" class="alert alert-success" class>
     <h4 class="text-center">Resolved Issues</h4>
@@ -172,7 +173,9 @@
               </tbody>
             </table>
            </div>
-           
+            <div class="card-footer bg-transparent border-success " style="align-items: right;">
+              <button class="btn btn-primary" data-bs-target="#a{{workunit.id}}" data-bs-toggle="modal">Reassign</button>
+             </div>
             </div>
             <form action="/dateupdate/{{workunit.id}}/" method="POST" onsubmit="return func('workunit.complid.id')">
               {% csrf_token %}

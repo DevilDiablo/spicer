@@ -20,8 +20,6 @@ from PIL import Image
 from django.core.files.base import ContentFile
 
 
-
-
 def get_image_from_data_url( data_url, resize=True, base_width=600 ):
 
     # getting the file format and the necessary dataURl for the file
@@ -591,6 +589,9 @@ def staffupcoming(request):
  
     return render(request,"staf/upcoming.html",{'comps':comps,'issues':issues1})
 
+
+@allowed_users(allowed_roles=['hod'])
+@login_required(login_url='hodlogin')
 def hodtobeassigned(request):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -608,6 +609,9 @@ def hodtobeassigned(request):
     "over":over,"sorts":sorts,"du":du,'list2':list2}
     return render(request,"hod/hodtobeasigned.html",context)
 
+
+@allowed_users(allowed_roles=['hod'])
+@login_required(login_url='hodlogin')
 def hodasignedissues(request):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -621,6 +625,9 @@ def hodasignedissues(request):
     context = {'username' :request.user,'dept':stafflogin_id,'att':atempttabel,'dept1':hod}
     return render(request,"hod/assignedissues.html",context)
 
+
+@allowed_users(allowed_roles=['hod'])
+@login_required(login_url='hodlogin')
 def assignfilter(request,taskid):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -637,6 +644,8 @@ def assignfilter(request,taskid):
 
 
 
+@allowed_users(allowed_roles=['hod'])
+@login_required(login_url='hodlogin')
 def hodresolvedissues(request):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -649,6 +658,9 @@ def hodresolvedissues(request):
     context = {'workunits' : workunits,'username' :request.user,'dept':stafflogin_id,'dept1':hod}
     return render(request,"hod/hodresolved.html",context)
 
+
+@allowed_users(allowed_roles=['hod'])
+@login_required(login_url='hodlogin')
 def resolvedfilter(request,taskid):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -661,6 +673,9 @@ def resolvedfilter(request,taskid):
     context = {'workunits' : workunits,'username' :request.user,'dept':stafflogin_id,'dept1':hod}
     return render(request,"hod/hodresolved.html",context)
 
+
+@allowed_users(allowed_roles=['hod'])
+@login_required(login_url='hodlogin')
 def hodfilter(request,taskid):
     hod = department.objects.get(id=taskid)
     hodname =request.user.username
@@ -677,6 +692,9 @@ def hodfilter(request,taskid):
     "over":over,"sorts":sorts,"du":du,'list2':list2}
     return render(request,"hod/hodtobeasigned.html",context)
 
+
+@allowed_users(allowed_roles=['hod'])
+@login_required(login_url='hodlogin')
 def hodstaffassigned(request):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -685,7 +703,7 @@ def hodstaffassigned(request):
     uname =request.user.id
     staff_id = HODlogindata.objects.get(user=uname)
     stafflogin_id = department.objects.filter(hod = staff_id)
-    atempttabel =attempts.objects.filter(complid__did__in=stafflogin_id,complid__accountdate__gte=datetime.date.today(),complid__forward=False)
+    atempttabel =attempts.objects.filter(complid__did__in=stafflogin_id,complid__forward=False)
     print(atempttabel)
     list2=stafflogindata.objects.filter(did__in=stafflogin_id)
     context = {'username' :request.user,'dept':stafflogin_id,'att':atempttabel,"dept1":list2,"dept2":hod}
@@ -699,8 +717,7 @@ def depfilter(request,taskid):
     uname =request.user.id
     staff_id = HODlogindata.objects.get(user=uname)
     stafflogin_id = department.objects.get(id = taskid)
-    atempttabel =attempts.objects.filter(complid__did=stafflogin_id,complid__accountdate__gte=datetime.date.today(),complid__forward=False)
-    print(atempttabel)
+    atempttabel =attempts.objects.filter(complid__did=stafflogin_id,complid__forward=False)
     list2=stafflogindata.objects.filter(did=stafflogin_id)
     context = {'username' :request.user,'dept':stafflogin_id,'att':atempttabel,"dept1":list2,"dept2":hod}
     return render(request,"hod/hodstaff.html",context)
@@ -712,12 +729,24 @@ def stafffilter(request,taskid):
     hod = department.objects.filter(hod=hodlogin_id)
     uname =request.user.id
     staff_id = HODlogindata.objects.get(user=uname)
-
     staf=stafflogindata.objects.get(id=taskid).did
     stafflogin_id = department.objects.get(id = staf.id)
-
-    atempttabel =attempts.objects.filter(complid__did=staf,complid__accountdate__gte=datetime.date.today(),complid__forward=False,complid__staff__id=taskid)
+    atempttabel =attempts.objects.filter(complid__did=staf,complid__forward=False,complid__staff__id=taskid)
     print(atempttabel)
     list2=stafflogindata.objects.filter(did=staf)
     context = {'username' :request.user,'dept':stafflogin_id,'att':atempttabel,"dept1":list2,"dept2":hod}
     return render(request,"hod/hodstaff.html",context)
+
+
+@allowed_users(allowed_roles=['hod'])
+@login_required(login_url='hodlogin')
+def hodaccountdateupdate(request,taskid):
+    date=request.POST['accdate']
+    up=attempts.objects.get(id=taskid)
+    at=complaint.objects.get(id=up.complid.id)
+    at.accountdate=date
+    up.count=up.count+1
+    up.save()
+    at.save()
+    print(date)
+    return redirect("hodhomepage")

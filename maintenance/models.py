@@ -26,6 +26,9 @@ class mainhodlogindata(models.Model):
     def __str__(self):
         return self.user.username
 
+class Meta:
+    unique_together=["mainhodlogindata","reviewer","tester"]
+
 
 class machine(models.Model):
     machine_name = models.CharField(max_length=50)

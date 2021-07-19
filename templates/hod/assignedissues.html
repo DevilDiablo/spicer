@@ -20,8 +20,6 @@
   // Construct the full URL with "id"
      document.location.href = url.replace('111', id);
     }
-  
-  
     }
   </script>
 
@@ -214,7 +212,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-info">
-        <h5 class="modal-title"><b>Feedback No : {{workunit.complid.id}}</b></h5>
+        <h5 class="modal-title"><b>Feedback No : {{workunit.complid.token}}</b></h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -316,6 +314,8 @@
 
 {% endfor %}
 </div>
+
+
 
 
 

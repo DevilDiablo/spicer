@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-
 from django.db.models.signals import pre_save,post_save
 from django.dispatch import receiver
 # Create your models here.
@@ -10,6 +9,9 @@ class HODlogindata(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     def __str__(self):
         return self.user.username
+
+class Meta:
+    unique_together=[" HODlogindata","userlogindata","stafflogindata","championdata"]
     
 class department(models.Model):
     Dname=models.CharField(max_length=50)
