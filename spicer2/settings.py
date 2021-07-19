@@ -135,8 +135,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_ROOT=os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static2/'
+STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
+STATIC_URL ='/static2/'
 STATICFILES_DIRS = ['static2']
 
 # Default primary key field type
@@ -144,8 +144,8 @@ STATICFILES_DIRS = ['static2']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
 LOGIN_REDIRECT_URL='/emaillogin'
 LOGOUT_REDIRECT_URL='/'
