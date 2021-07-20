@@ -46,6 +46,8 @@
           </div>
          <div class="card-footer bg-transparent border-success " style="align-items: right;">
          <button class="btn btn-success" data-bs-toggle="modal"  data-bs-target="#abc{{workunit.complid.id}}">View</button>
+         <button class="btn btn-info" data-bs-toggle="modal"  data-bs-target="#update{{workunit.complid.id}}">Update</button>
+
          <!-- <button><a href="#{{workunit.id}}">Show additional usage data</a></button> -->
          <div class="modal" id="abc{{workunit.complid.id}}" >
           <div class="modal-dialog" role="document">
@@ -82,27 +84,85 @@
                     <th scope="row">Account date</th>
                     <td>{{workunit.complid.accountdate}}</td>
                   </tr>
-                  <tr  class='table-success'>
-                    <th scope="row">Champion</th>
-                    <td>{{workunit.complid.cid.user}}</td>
-                  </tr>
+                 
                   </tbody>
-                
-                  <tr >
                   <form action="/resolveissue/{{workunit.complid.id}}/" method="post" enctype="multipart/form-data">
-                  {% csrf_token %}
+                    {% csrf_token %}
+
+                  <tr >
                   <th><label for="id_image">Upload Resolved Images</label></th>
                  
-                  <td><input id="id_image" type="file" class="btn btn-info" name="rimage" value="rimage/noimage.png ">
-                  
-             </td>
+                  <td><input id="id_image" type="file" class="btn btn-info" name="rimage" value="rimage/noimage.png "></td>
                 
-                  
+                </tr>
+                <tr class="table-success">
+                  <th><label for="desc">Description</label></th>
+                 
+                  <td><input id="desc" type="text" name="desc" required ></td>
+
                 </tr>
                 </table>
               </div>
               <div class="modal-footer">
                 <input type="submit" class="btn btn-info" value="Resolved">  
+               
+              </form>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal" id="update{{workunit.complid.id}}" >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-success">
+                <h5 class="modal-title text-light">Feedback</h5>
+                <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body ">
+                {% if workunit.complid.img %}
+                <div class = "text-center">
+                <img src="{{ workunit.complid.img.url }}" width="286px" height="150px" id="img1" ><br>
+              </div>
+                {% endif %}
+                <br>
+
+                <table class="table table-hover">
+                  <tbody>
+                  <tr class='table-success'>
+                    <th scope="row">Opendate</th>
+                    <td>{{workunit.complid.opendate}}</td>
+                  </tr>
+                  <tr >
+                    <th scope="row">Issue</th>
+                    <td>{{workunit.complid.issue}}</td>
+                  </tr>
+                  <tr  class='table-success'>
+                    <th scope="row">Corrective</th>
+                    <td>{{workunit.complid.corrective}}</td>
+                  </tr>
+                  <tr >
+                    <th scope="row">Account date</th>
+                    <td>{{workunit.complid.accountdate}}</td>
+                  </tr>
+                 
+                  </tbody>
+                  <form action="/updatestatus/{{workunit.complid.id}}/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                
+                <tr class="table-success">
+                  <th><label for="desc">Update status</label></th>
+                 
+                  <td><input id="desc" type="text" name="desc" required ></td>
+
+                </tr>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <input type="submit" class="btn btn-info" value="Save">  
                
               </form>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -157,6 +217,8 @@
                <div class="card-footer bg-transparent border-info " style="align-items: right;">
                
                 <button class="btn btn-info" data-bs-toggle="modal"  data-bs-target="#abc{{workunit.complid.id}}">View</button>
+
+                <button class="btn btn-success" data-bs-toggle="modal"  data-bs-target="#update{{workunit.complid.id}}">Update</button>
                 <div class="modal" id="abc{{workunit.complid.id}}" >
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -192,10 +254,7 @@
                             <th scope="row">Account date</th>
                             <td>{{workunit.complid.accountdate}}</td>
                           </tr>
-                          <tr class='table-info'>
-                            <th scope="row">Champion</th>
-                            <td>{{workunit.complid.cid.user}}</td>
-                          </tr>
+                         
                           </tbody>
                         
                           <tr >
@@ -209,10 +268,75 @@
                           <br>
                           
                         </tr>
+                        <tr class="table-info">
+                          <th><label for="desc">Description</label></th>
+                         
+                          <td><input id="desc" type="text" name="desc" required ></td>
+                        
+                          
+                        </tr>
                         </table>
                       </div>
                       <div class="modal-footer">
                         <input type="submit" class="btn btn-info" value="Resolved">  
+                       
+                      </form>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal" id="update{{workunit.complid.id}}" >
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header bg-success">
+                        <h5 class="modal-title text-light">Feedback</h5>
+                        <button type="button" class="close text-light" data-bs-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body ">
+                        {% if workunit.complid.img %}
+                        <div class = "text-center">
+                        <img src="{{ workunit.complid.img.url }}" width="286px" height="150px" id="img1" ><br>
+                      </div>
+                        {% endif %}
+                        <br>
+        
+                        <table class="table table-hover">
+                          <tbody>
+                          <tr class='table-success'>
+                            <th scope="row">Opendate</th>
+                            <td>{{workunit.complid.opendate}}</td>
+                          </tr>
+                          <tr >
+                            <th scope="row">Issue</th>
+                            <td>{{workunit.complid.issue}}</td>
+                          </tr>
+                          <tr  class='table-success'>
+                            <th scope="row">Corrective</th>
+                            <td>{{workunit.complid.corrective}}</td>
+                          </tr>
+                          <tr >
+                            <th scope="row">Account date</th>
+                            <td>{{workunit.complid.accountdate}}</td>
+                          </tr>
+                         
+                          </tbody>
+                          <form action="/updatestatus/{{workunit.complid.id}}/" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+        
+                        
+                        <tr class="table-success">
+                          <th><label for="desc">Update Status</label></th>
+                         
+                          <td><input id="desc" type="text" name="desc" required ></td>
+        
+                        </tr>
+                        </table>
+                      </div>
+                      <div class="modal-footer">
+                        <input type="submit" class="btn btn-info" value="Save">  
                        
                       </form>
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

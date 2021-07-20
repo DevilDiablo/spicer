@@ -63,6 +63,10 @@ urlpatterns=[
     path('resolvedchamp/<int:taskid>/',resolvedchamp,name="resolvedchamp"),
     path('verified/<int:taskid>/',verified,name="verified"),
     path('resolveissue/<int:taskid>/',resolveissue,name="resolveissue"),
+    path('updatestatus/<int:taskid>/',updatestatus,name="updatestatus"),
+
+    
+
 
 #nav bar content for staff person  
     path('tobeasigned/',tobeasigned,name="tobeasigned"),

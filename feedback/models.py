@@ -61,16 +61,17 @@ class complaint(models.Model):
     issue=models.CharField(max_length=500)
     corrective=models.CharField(max_length=400,blank=True)
     status=models.BooleanField(default=False)
+    update = models.CharField(max_length=255,null=True,blank=True)
     verification=models.BooleanField(default=False)
     crictcality=models.BooleanField(default=False)
     forward=models.BooleanField(default=False)
-    img=models.ImageField(null=True, blank=True,upload_to='userissuesimgs/', default='userissuesimgs/noimage.png')
+    img = models.ImageField(null=True, blank=True,upload_to='userissuesimgs/', default='userissuesimgs/noimage.png')
     resolved_img = models.ImageField(null=True, blank=True,upload_to='resolvedimgs/')
-    complaint_issue=models.ForeignKey(issues,on_delete=models.DO_NOTHING)
-    resolved_date=models.DateField(null=True,blank=True)   
+    complaint_issue = models.ForeignKey(issues,on_delete=models.DO_NOTHING)
+    resolved_date = models.DateField(null=True,blank=True)
+    resolved_txt = models.CharField(max_length=255,null=True,blank=True)
     verified_date=models.DateField(null=True,blank=True)  
     staff=models.ForeignKey(stafflogindata,on_delete=models.DO_NOTHING,null=True,blank=True)
-
     def __str__(self):
         return '{} {} {} {}'.format(self.id,self.did.Dname, self.accountdate,self.token)
 
