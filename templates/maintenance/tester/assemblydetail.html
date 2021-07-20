@@ -3,13 +3,6 @@
 
 {% block content %}
 <script>
-  function dismis(modelid){
-    alert(modelid);
- alert(document.getElementById(modelid).modal("hide"));
-
-  }
-
-
 function convert(day)
 {
   month = String(day)
@@ -335,13 +328,13 @@ hello(sid);
       <div class="container">
 
      <div class="list-group-item list-group-item-action bg-info">{{stan.standard_id.check_id.check_desc}} <button onclick="open1a('{{stan.id}}','{{stan.standard_type}}','{{stan.standard_id.check_id.fromdate}}','{{stan.standard_id.check_id.nextdate}}','{{stan.standard_id.time}}','{{stan.standard_id.id}}')" class="btn btn-secondary" >start</button>
-      <div class="modal" id="aa{{stan.id}}">
+      <div class="modal" id="a{{stan.id}}">
         <div class="modal-dialog bg-info" role="document">
           <div class="modal-content">
             <div class="modal-header bg-info">
               <h5 class="modal-title text-light">Binary Modal</h5>
               <button type="button" class="close text-light"   aria-label="Close">
-                <span aria-hidden="true"  data-bs-dismiss="a{{stan.id}}" onclick='dismis("aa{{stan.id}}");'>&times;</span>
+                <span aria-hidden="true"  data-bs-dismiss="a{{stan.id}}" onclick="document.getElementById('a{{stan.id}}').style.display='none';pause('{{stan.standard_id.id}}');">&times;</span>
               </button>
             </div>  
             <div class="modal-body">
