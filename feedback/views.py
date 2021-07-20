@@ -162,7 +162,7 @@ def logoutuser(request):
 
 @allowed_users(allowed_roles=['user'])
 @allowed_users(allowed_roles=['staff'])
-@allowed_users(allowed_roles=['hod'])
+@allowed_users(allowed_roles=['champion'])
 def feedbackpage(request):
     list1=department.objects.all()
     context={"list":list1}
