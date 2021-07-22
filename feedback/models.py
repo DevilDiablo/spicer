@@ -86,4 +86,3 @@ class attempts(models.Model):
 
     def __str__(self):
         return '{} {} {} {}'.format(self.complid.id,self.complid.did.Dname,self.champid.user.username,self.count)
-

@@ -13,7 +13,6 @@ from maintenance.views import *
 from django.contrib.auth.models import User,Group
 
 
-
 # python standard lib
 import base64, secrets, io
 
@@ -86,9 +85,15 @@ def homepageview(request):
             if i.groups.filter(name="champion").exists():
                if userlogindata.objects.filter(user__username=i.username).exists()==False:
                     userlogindata(user=i).save()
+                    if i.groups.filter(name="user").exists()==False:
+                        group = Group.objects.get(name='user')
+                        i.groups.add(group)
             if i.groups.filter(name="staff").exists():
-               if userlogindata.objects.filter(user__username=i.username).exists()==False:
+                if userlogindata.objects.filter(user__username=i.username).exists()==False:
                     userlogindata(user=i).save()
+                    if i.groups.filter(name="user").exists()==False:
+                        group = Group.objects.get(name='user')
+                        i.groups.add(group)
         return render(request, "feedback/Homepage.html")
 
 def userloginpage(request):
@@ -115,12 +120,12 @@ def userlogin(request):
 @login_required(redirect_field_name='')
 def emaillog(request):
     if request.user.is_authenticated:
-        if userlogindata.objects.filter(user=request.user).exists():
-            return redirect("userhomepage")
-        elif stafflogindata.objects.filter(user=request.user).exists():
+        if stafflogindata.objects.filter(user=request.user).exists():
             return redirect("stafhomepage")
         elif championdata.objects.filter(user=request.user).exists():
             return redirect("championhomepage")
+        if userlogindata.objects.filter(user=request.user).exists():
+            return redirect("userhomepage")
         elif HODlogindata.objects.filter(user=request.user).exists():
             return redirect("hodhomepage")
         elif mainhodlogindata.objects.filter(user=request.user).exists():
@@ -160,9 +165,7 @@ def logoutuser(request):
     logout(request)
     return redirect("homepage")
 
-@allowed_users(allowed_roles=['user'])
-@allowed_users(allowed_roles=['staff'])
-@allowed_users(allowed_roles=['champion'])
+
 def feedbackpage(request):
     list1=department.objects.all()
     context={"list":list1}
@@ -172,7 +175,7 @@ def feedbackpage(request):
         messages.info(request, 'Login to give feedback')
         return redirect("userloginpage")
 
-@allowed_users(allowed_roles=['user'])
+
 def myfeedbackpage(request):
     uname =request.user.username
     user_id = User.objects.get(username=uname)
@@ -180,7 +183,7 @@ def myfeedbackpage(request):
     workunits = complaint.objects.filter(uname=userlogin_id).order_by('-opendate')
     context = {'workunits' : workunits,'username' : uname}
     return render(request,"feedback/myfeedbackform.html",context)
-@allowed_users(allowed_roles=['user'])
+
 
 def feedbackval(request):
     issues=request.POST['issue']
@@ -213,7 +216,7 @@ def staflogin(request):
     messages.add_message(request, messages.INFO, "invalid credentials ! check username and password")
     return redirect(request.META["HTTP_REFERER"])
 
-@allowed_users(allowed_roles=['staff'])
+
 def stafhomepage(request):
     staff_id = stafflogindata.objects.get(user=request.user)
     stafflogin_id = staff_id.did
@@ -301,8 +304,6 @@ def editformviewhod(request,taskid):
     return render(request,"hod/editformview.html",context)
 
 
-@allowed_users(allowed_roles=['user'])
-
 def edituserform(request,taskid):
     workunits = issues.objects.get(id=taskid)
     dep=department.objects.get(Dname=workunits.issuedepartment)
@@ -311,7 +312,6 @@ def edituserform(request,taskid):
 
 
 @allowed_users(allowed_roles=['staff'])
-
 def formsave1(request,taskid):
     staf1 = stafflogindata.objects.get(user=request.user)
     corrective1=request.POST['corrective']
@@ -339,7 +339,6 @@ def formsave1(request,taskid):
 
 
 @allowed_users(allowed_roles=['hod'])
-
 def formsave1hod(request,taskid):
     corrective1=request.POST['corrective']
     accountdate=request.POST['accountdate']
@@ -356,7 +355,6 @@ def formsave1hod(request,taskid):
     return redirect("hodtobeasigned")
 
 @allowed_users(allowed_roles=['staff'])
-
 def formsave2(request,taskid):
     corrective1=request.POST['corrective']
     champid=request.POST['champion']
@@ -371,15 +369,12 @@ def formsave2(request,taskid):
 
 
 @allowed_users(allowed_roles=['staff'])
-
 def fwdform(request,taskid):
     entry=complaint.objects.get(id=taskid)
     entry.forward=True
     entry.save()
     return redirect(request.META["HTTP_REFERER"])
 
-
-@allowed_users(allowed_roles=['user'])
 
 def allissues(request,taskid):
     dep=department.objects.get(id=taskid)
@@ -388,7 +383,6 @@ def allissues(request,taskid):
     return render(request,"feedback/allissues.html",context)
 
 
-@allowed_users(allowed_roles=['user'])
 
 def saveuserform(request,taskid):
     workunits = issues.objects.get(id=taskid)
@@ -408,16 +402,16 @@ def saveuserform(request,taskid):
     comp.save()
     return redirect("userhomepage")
 
-@allowed_users(allowed_roles=['staff'])
 
+@allowed_users(allowed_roles=['staff'])
 def updateatempt(request,taskid):
     workunits = attempts.objects.get(id=taskid)
     list2=championdata.objects.all()
     context={"list2":list2,"workunits":workunits}
     return render(request,"staf/updateformview.html",context)
 
-@allowed_users(allowed_roles=['staff'])
 
+@allowed_users(allowed_roles=['staff'])
 def accountdateupdate(request,taskid):
     date=request.POST['accdate']
     up=attempts.objects.get(id=taskid)
@@ -451,8 +445,8 @@ def championlogin(request):
     messages.add_message(request, messages.INFO, "invalid credentials ! check username and password")
     return redirect(request.META["HTTP_REFERER"])
 
-@allowed_users(allowed_roles=['champion'])
 
+@allowed_users(allowed_roles=['champion'])
 def championhomepage(request):
     if request.user.is_superuser:
         messages.add_message(request,messages.INFO,"you must login as staff")
@@ -487,7 +481,7 @@ def resolvedchamp(request,taskid):
     entry.save()
     return redirect("championhomepage")
 
-@allowed_users(allowed_roles=['user'])
+
 def verified(request,taskid):
     entry=complaint.objects.get(id=taskid)
     entry.verification=True
@@ -511,21 +505,20 @@ def tobeasigned(request):
             complid__accountdate__lt=datetime.date.today())
     list2=championdata.objects.filter(did=stafflogin_id)
     print(list2)
+    td = datetime.date.today()
+    print(td.day)
     context = {'workunits' : workunits,'username' :request.user,'dept':stafflogin_id,
-    "over":over,"sorts":sorts,"du":du,"list2":list2,"du1":du1}
+    "over":over,"sorts":sorts,"du":du,"list2":list2,"du1":du1,"today":td}
     return render(request,"staf/tobeasigned.html",context)
-
 
 def asignedissues(request):
     staff_id = stafflogindata.objects.get(user=request.user)
     stafflogin_id =staff_id.did
-    atempttabel =attempts.objects.filter(complid__did=stafflogin_id,complid__accountdate__gte=datetime.date.today())
-    print(atempttabel)
+    atempttabel =attempts.objects.filter(complid__did=stafflogin_id,complid__accountdate__gte=datetime.date.today(),complid__forward=False)
     context = {'username' :request.user,'dept':stafflogin_id,'att':atempttabel}
     return render(request,"staf/asignedissues.html",context)
 
 @allowed_users(allowed_roles=['staff'])
-
 def resolvedissues(request):
     uname =request.user.id
     staff_id = stafflogindata.objects.get(user=uname)
@@ -533,8 +526,6 @@ def resolvedissues(request):
     workunits = complaint.objects.filter(did = stafflogin_id)
     context = {'workunits' : workunits,'username' :request.user,'dept':stafflogin_id}
     return render(request,"staf/resolved.html",context)
-
-@allowed_users(allowed_roles=['user'])
 
 def resolvedissuesuser(request):
     uname =request.user.id
@@ -546,7 +537,6 @@ def resolvedissuesuser(request):
     return render(request,"feedback/resolved.html",context)
 
 @allowed_users(allowed_roles=['staff'])
-
 def championreassign(request,id):
     att=attempts.objects.get(id=id)
     comp=complaint.objects.get(id=att.complid.id)
@@ -559,7 +549,6 @@ def championreassign(request,id):
     attempts(complid=comp,champid=champ,count=1).save()
     return redirect("stafhomepage") 
 
-@allowed_users(allowed_roles=['user'])
 
 def resolvedissuesuser(request):
     uname =request.user.id
@@ -571,7 +560,6 @@ def resolvedissuesuser(request):
     return render(request,"feedback/resolved.html",context)
 
 @allowed_users(allowed_roles=['champion'])
-
 def resolveissue(request,taskid):
     workunit= complaint.objects.get(id=taskid)
     desc = request.POST['desc']
@@ -584,7 +572,6 @@ def resolveissue(request,taskid):
     return redirect("championhomepage")
 
 @allowed_users(allowed_roles=['staff'])
-
 def staffupcoming(request):
     staff=stafflogindata.objects.get(user=request.user)
     over=attempts.objects.filter(count__lt=4).filter(complid__did=staff.did,complid__verification=False,
@@ -597,7 +584,6 @@ def staffupcoming(request):
 
 
 @allowed_users(allowed_roles=['hod'])
-
 def hodtobeassigned(request):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -617,7 +603,6 @@ def hodtobeassigned(request):
 
 
 @allowed_users(allowed_roles=['hod'])
-
 def hodasignedissues(request):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -633,7 +618,6 @@ def hodasignedissues(request):
 
 
 @allowed_users(allowed_roles=['hod'])
-
 def assignfilter(request,taskid):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -651,7 +635,6 @@ def assignfilter(request,taskid):
 
 
 @allowed_users(allowed_roles=['hod'])
-
 def hodresolvedissues(request):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)
@@ -666,7 +649,6 @@ def hodresolvedissues(request):
 
 
 @allowed_users(allowed_roles=['hod'])
-
 def resolvedfilter(request,taskid):
     hodname =request.user.username
     hod_id = User.objects.get(username=hodname)

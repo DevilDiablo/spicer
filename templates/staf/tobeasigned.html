@@ -2,18 +2,24 @@
 {% load static %}
 {% block content %}
 <script>
-  function func(id)
+  function func(id,id2)
   {
+  
+  if(id2<='{{today}}')
+  alert("Enter the valid date");
+  return false;
   var current=new Date();
   var date1=current.getDate();
-  date=document.getElementById("accdate"+id);
+  date=document.getElementById("accdatea"+id);
+  alert(date.innerHTML);
+  return false;
   all=date.value.split("-");
   year=current.getFullYear();
   month=current.getMonth();
   date2=date1+"-"+month+"-"+year;
   if(all[2]<date1 || all[1]<month || all[0]<year)
   {
-    document.getElementById('err'+id).style.display = "contents";
+    alert("Enter the valid date");
     return false;
   }
     return true;
@@ -172,7 +178,7 @@
                   <button class="btn btn-primary" data-bs-target="#a{{workunit.id}}" data-bs-toggle="modal">Reassign</button>
                  </div>
                 </div>
-                <form action="/dateupdate/{{workunit.id}}/" method="POST" onsubmit="return func('workunit.complid.id')">
+                <form action="/dateupdate/{{workunit.id}}/" method="POST" onsubmit="return func('{{workunit.complid.id}}','{{workunit.complid.accountdate}}');">
                   {% csrf_token %}
                 <div class="modal" id="a{{workunit.id}}">
                   <div class="modal-dialog " role="document">
@@ -199,10 +205,10 @@
                             <td>{{workunit.complid.corrective}}</td>
                           </tr>
                <tr >
-                            <th scope="row" name="accountdate" id="accdate{{workunit.complid.id}}">Account Date</th>
-                            <td>{{workunit.complid.accountdate}}</td>
+                            <th scope="row" name="accountdate" >Account Date</th>
+                            <td><p id="accdatea{{workunit.complid.id}}">{{workunit.complid.accountdate}}</p></td>
                           </tr>
-                          <tr class="table-primary" id = "err{{workunit.complid.id}}" style="display: none;" >
+                          <tr class="table-primary" id = "err" style="display: none;" >
                             <th scope="row">Error</th>
                             <td>Enter valid date </td>
                           </tr>

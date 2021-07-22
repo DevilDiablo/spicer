@@ -44,6 +44,10 @@
                 <th scope="row">Corrective Step</th>
                 <td>{{workunit.corrective}}</td>
               </tr>
+              <tr>
+                <th scope="row">Resolved Descriptin</th>
+                <td>{{workunit.resolved_txt}}</td>
+              </tr>
               <tr class="table-success">
                 <th scope="row">Resolved Date</th>
                 <td>{{workunit.resolved_date}}</td>
@@ -102,6 +106,10 @@
                            <th scope='row'name="status" id="ststus">Status</th>
                            <td>Resolved</td>
                          </tr>
+                         <tr >
+                          <th scope="row">Resolved Descriptin</th>
+                          <td>{{workunit.resolved_txt}}</td>
+                        </tr>
                        </tbody>
                      </table>
                      
@@ -155,6 +163,10 @@
                     <tr >
                       <th scope="row" name="accountdate" id="accda">Resolved Date</th>
                       <td>{{workunit.resolved_date}}</td>
+                    </tr>
+                    <tr >
+                      <th scope="row">Resolved Descriptin</th>
+                      <td>{{workunit.resolved_txt}}</td>
                     </tr>
                     <tr class="table-info">
                       <th scope="row" name="accountdate" id="accda">Verified Date</th>
@@ -312,6 +324,10 @@
           <th scope="row" name="accountdate" id="accda">Resolved Date</th>
           <td>{{workunit.resolved_date}}</td>
         </tr>
+        <tr >
+          <th scope="row">Resolved Descriptin</th>
+          <td>{{workunit.resolved_txt}}</td>
+        </tr>
         <tr class="table-info">
           <th scope="row" name="accountdate" id="accda">Verified Date</th>
           <td>{{workunit.verified_date}}</td>
@@ -370,7 +386,11 @@
                 <th scope="row" name="accountdate" id="accda">Resolved Date</th>
                 <td>{{workunit.resolved_date}}</td>
               </tr>
-              <tr x>
+              <tr >
+                <th scope="row">Resolved Descriptin</th>
+                <td>{{workunit.resolved_txt}}</td>
+              </tr>
+              <tr>
                 <th scope="row" name="accountdate" id="accda">Verified Date</th>
                 <td>{{workunit.verified_date}}</td>
               </tr>

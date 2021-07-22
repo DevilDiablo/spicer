@@ -254,7 +254,7 @@ def updaterybvalue(request,stanid):
         frequ = frequency(currentdate=date.today(),todate=cp.nextdate,
         Fromdate=cp.fromdate ,checked=True,checkpoint_id=chek)
         frequ.save()
-        standr = standard_ryb(frequency=frequ,standard_id=stand.standard_id,r=r,y=y,b=b,status=tf,time=mins)
+        standr = standard_ryb(frequency=frequ,standard_id=stand.standard_id,r=r,y=y,b=b,status=tf,time=mins,img=imgg)
         standr.save()
         cp.checked=False
         cp.fromdate=cp.nextdate

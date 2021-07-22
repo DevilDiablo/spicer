@@ -141,9 +141,7 @@
               </tbody>
             </table>
            </div>
-            <div class="card-footer bg-transparent border-success " style="align-items: right;">
-              <button class="btn btn-primary" data-bs-target="#a{{workunit.id}}" data-bs-toggle="modal">Reassign</button>
-             </div>
+           
             </div>
             <form action="/dateupdate/{{workunit.id}}/" method="POST" onsubmit="return func('workunit.complid.id')">
               {% csrf_token %}
